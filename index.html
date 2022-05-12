@@ -13,22 +13,26 @@
 
     <script src="freehandTool.js"></script>
     <script src="lineToTool.js"></script>
-    <script src="sprayCanTool.js"></script>
     <script src="mirrorDrawTool.js"></script>
+    <script src="sprayCanTool.js"></script>
+    <script src="rectangleTool.js"></script>
+    <script src="ellipseTool.js"></script>
 
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-  	<div class="wrapper">
-      <div class="box header">My Drawing App
-
+  	<dciv class="wrapper">
+      <div id='top-menu' class="box header">My Drawing App
         <button id="clearButton">Clear</button>
         <button id="saveImageButton">Save Image</button>
+        <p id="canvasWidthDisplay">Canvas size: <span id="canvasWidthInfo"></span></p>
       </div>
       <div class="box" id="sidebar"></div>
       <div id="content"></div>
       <div class="box colourPalette"></div>
-      <div class="box options"></div>
+      <div class="box options">
+        <div id="tool-options"></div>
+      </div>
 	</div>
   </body>
 </html>

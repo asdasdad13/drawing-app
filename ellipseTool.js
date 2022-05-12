@@ -1,40 +1,35 @@
-function FreehandTool(){
-	//set an icon and a name for the object
-	this.icon = "assets/freehand.png";
-	this.name = "freehand";
+function EllipseTool(){
+	this.icon = "assets/ellipse.png";
+	this.name = "Ellipse";
+	this.size = 3;
 
-	//to smoothly draw we'll draw a line from the previous mouse location
-	//to the current mouse location. The following values store
-	//the locations from the last frame. They are -1 to start with because
-	//we haven't started drawing yet.
-	var previousMouseX = -1;
-	var previousMouseY = -1;
+	var startMouseX = -1; //-1 is the null value
+	var startMouseY = -1;
+	var drawing = false;
 
 	this.draw = function(){
 		strokeWeight(this.size);
-		//if the mouse is pressed
-		if(mouseIsPressed && checkWithinCanvas()){
-			//check if they previousX and Y are -1. set them to the current
-			//mouse X and Y if they are.
-			if (previousMouseX == -1){
-				previousMouseX = mouseX;
-				previousMouseY = mouseY;
+		if(mouseIsPressed && checkWithinCanvas()){ //if mouse is pressed
+			if(startMouseX == -1){ //startMouseX is changed from -1 to mouseX value for start of new line
+				startMouseX = mouseX;
+				startMouseY = mouseY;
+				drawing = true;
+				loadPixels(); //system funtcion that loads canvas image to [pixels] array
 			}
-			//if we already have values for previousX and Y we can draw a line from 
-			//there to the current mouse location
-			else{
-				line(previousMouseX, previousMouseY, mouseX, mouseY);
-				previousMouseX = mouseX;
-				previousMouseY = mouseY;
+
+			else{ //for rendering the line, mouse released or not
+				updatePixels(); //system function that updates canvas image with contents of [pixels] array
+				ellipse(startMouseX, startMouseY, (mouseX-startMouseX)*2, (mouseY-startMouseY)*2); //a line is rendered from starting point to current mouse position, mouse released or not
 			}
+
 		}
-		//if the user has released the mouse we want to set the previousMouse values 
-		//back to -1.
-		//try and comment out these lines and see what happens!
-		else{
-			previousMouseX = -1;
-			previousMouseY = -1;
+
+		else if(drawing){ //if a line is in the process of being drawn, and mouse is no longer pressed
+			drawing = false; //reset all values to prevent next line from connecting
+			startMouseX = -1;
+			startMouseY = -1;
 		}
+
 		if (keyIsPressed){
 			if (keyCode==91 && this.size>1) { //decrease brush size with '['
 				this.size--;
@@ -61,7 +56,7 @@ function FreehandTool(){
 			self.size = toolSizeInput.value();
 		})
 	};
-
+	
 	this.unselectTool = function() {
 		select("#tool-size").remove();
 	}
@@ -80,5 +75,5 @@ function FreehandTool(){
 		toolSizeInput.style('width','3rem');
 		toolSizeInput.attribute('type', 'number')
 		toolSizeInput.parent('tool-size');
-	}
+	};
 }

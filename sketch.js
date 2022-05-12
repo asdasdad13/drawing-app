@@ -23,7 +23,9 @@ function setup() {
 	toolbox.addTool(new FreehandTool());
 	toolbox.addTool(new LineToTool());
 	toolbox.addTool(new SprayCanTool());
-	toolbox.addTool(new mirrorDrawTool());
+	toolbox.addTool(new MirrorDrawTool());
+	toolbox.addTool(new RectangleTool());
+	toolbox.addTool(new EllipseTool());
 	background(255);
 
 }
@@ -38,4 +40,8 @@ function draw() {
 	} else {
 		alert("it doesn't look like your tool has a draw method!");
 	}
+}
+
+function checkWithinCanvas(x,y) { //check that user mouse is on canvas, if it isn't, nothing will be drawn
+	return (mouseX>=0 && mouseX<=canvasContainer.size().width && mouseY>=0 && mouseY<=canvasContainer.size().height)
 }
