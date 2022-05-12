@@ -48,13 +48,11 @@ function Toolbox() {
 				console.log(toolName,this.selectedTool)
 				//if the tool has an unselectTool method run it.
 				if (this.selectedTool != null && this.selectedTool.hasOwnProperty("unselectTool")) {
-					if (!(toolName == 'mirrorDraw' && this.selectedTool.name == 'mirrorDraw')) {
-						this.selectedTool.unselectTool();
-						selectAll(".sideBarItem")[i].style('border', '0');
-					}
+					this.selectedTool.unselectTool();
+					selectAll(".sideBarItem")[i].style('border', '0');
 				}
 				//select the tool and highlight it on the toolbar
-				if (toolName == 'mirrorDraw' && this.selectedTool.name == 'mirrorDraw') this.selectedTool.adjustOrientation();
+				if (toolName == 'mirrorDraw' && this.selectedTool.name == 'mirrorDraw') this.selectedTool.adjustOrientation(); // if mirrorDraw is active, this click changes the orientation of the symmetry line
 				this.selectedTool = this.tools[i];
 				select("#" + toolName + "sideBarItem").style("border", "2px solid cyan");
 		
