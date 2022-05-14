@@ -45,7 +45,6 @@ function Toolbox() {
 	this.selectTool = function(toolName) {
 		for (var i = 0; i < this.tools.length; i++) {
 			if (this.tools[i].name == toolName) {
-				console.log(toolName,this.selectedTool)
 				//if the tool has an unselectTool method run it.
 				if (this.selectedTool != null && this.selectedTool.hasOwnProperty("unselectTool")) {
 					this.selectedTool.unselectTool();

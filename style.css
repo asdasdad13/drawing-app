@@ -75,3 +75,12 @@ html, body {
 .header {
   background-color: #999;
 }
+
+p {
+	display: inline;
+	font-size: 16px;
+}
+
+div {
+	font-size: 20px;
+}

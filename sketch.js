@@ -3,14 +3,16 @@
 var toolbox = null;
 var colourP = null;
 var helpers = null;
-
+var stateHistory = []; //for undoing and redoing
+var stateFuture = [];
 
 function setup() {
-
 	//create a canvas to fill the content div from index.html
 	canvasContainer = select('#content');
-	var c = createCanvas(canvasContainer.size().width, canvasContainer.size().height);
+	var c = createCanvas(canvasContainer.size().width, canvasContainer.size().height); //canvas size resizes automaticcally based on user's screen res
 	c.parent("content");
+	//display initial canvas width
+	select('#canvasWidthInfo').html(width + ' x ' + height);
 
 	//create helper functions and the colour palette
 	helpers = new HelperFunctions();
@@ -28,6 +30,7 @@ function setup() {
 	toolbox.addTool(new EllipseTool());
 	background(255);
 
+	history = [];
 }
 
 function draw() {
@@ -44,4 +47,29 @@ function draw() {
 
 function checkWithinCanvas(x,y) { //check that user mouse is on canvas, if it isn't, nothing will be drawn
 	return (mouseX>=0 && mouseX<=canvasContainer.size().width && mouseY>=0 && mouseY<=canvasContainer.size().height)
+}
+
+function keyPressed(e) {
+    if (e.ctrlKey && (e.key == 'z' || e.key == 'Z')) { //undo
+		undo();
+	}
+	if (e.ctrlKey && (e.key == 'y' || e.key == 'Y')) { //redo
+		redo();
+	}
+}
+
+function undo() {
+	stateFuture.push(stateHistory[stateHistory.length-1]);
+	pixels = stateHistory.pop();
+	updatePixels();
+}
+
+function redo() { //?
+	stateHistory.push(stateFuture.pop())
+	pixels = stateHistory[stateHistory.length-1];
+	updatePixels();
+}
+
+function saveState() {
+	stateHistory.push(get());
 }
