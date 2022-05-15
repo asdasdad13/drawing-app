@@ -22,13 +22,11 @@ function LineToTool(){
 				startMouseY = mouseY;
 				drawing = true;
 				//save the current pixel Array
-				saveState(); //allows for undoing/redoing
 				loadPixels();
 			}
 
 			else{
-				//update the screen with the saved pixels to hide any previous
-				//line between mouse pressed and released
+				//update the screen with the saved pixels to hide any previous line between mouse pressed and released
 				updatePixels();
 				//draw the line
 				line(startMouseX, startMouseY, mouseX, mouseY);
@@ -46,12 +44,12 @@ function LineToTool(){
 		}
 		
 		if (keyIsPressed){
-			if (keyCode==91 && this.size>1) { //decrease brush size with '['
+			if (key=='[' && this.size>1) { //decrease brush size with '['
 				this.size--;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);
 			}
-			if (keyCode==93 && this.size<100) { //increase brush size with ']'
+			if (keyCode==']' && this.size<100) { //increase brush size with ']'
 				this.size++;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);

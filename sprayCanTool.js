@@ -2,25 +2,59 @@
 function SprayCanTool(){
     this.name = "sprayCanTool";
     this.icon = "assets/sprayCan.png";
-    this.size = 3;
+    this.size = 50;
 	var self = this;
+	var previousMouseX = -1;
+	var previousMouseY = -1;
+	var drawing = false;
+
 	this.draw = function(){
-        strokeWeight(this.size/50);
+        strokeWeight(this.size/25);
+		if (keyIsPressed && key=='') { //shift key down; draw straight line
+			if(mouseIsPressed && checkWithinCanvas()){
+				//if it's the start of drawing a new line
+				if(previousMouseX == -1){
+					previousMouseX = mouseX;
+					previousMouseY = mouseY;
+					drawing = true;
+					//save the current pixel Array
+					loadPixels();
+				}
+	
+				else{
+					//update the screen with the saved pixels to hide any previous line between mouse pressed and released
+					updatePixels();
+					//draw the line
+					for(var i = 0; i < (this.size/2)*(dist(previousMouseX,previousMouseY,mouseX,mouseY)%this.size); i++){
+						point(random(mouseX-this.size, mouseX + this.size), random(mouseY-this.size, mouseY+this.size));
+					}
+				}
+	
+			}
+	
+			else if(drawing){
+				//save the pixels with the most recent line and reset the
+				//drawing bool and start locations
+				loadPixels();
+				drawing = false;
+				previousMouseX = -1;
+				previousMouseY = -1;
+			}
+		}
         //if the mouse is pressed paint on the canvas
-        if(mouseIsPressed && checkWithinCanvas()){
+        else if(mouseIsPressed && checkWithinCanvas()){
             for(var i = 0; i < this.size/2; i++){
-                point(random(mouseX-this.size, mouseX + this.size), 
-                random(mouseY-this.size, mouseY+this.size));
+                point(random(mouseX-this.size, mouseX + this.size), random(mouseY-this.size, mouseY+this.size));
             }
         }
 
         if (keyIsPressed){
-			if (keyCode==91 && this.size>1) { //decrease brush size with '['
+			if (key=='[' && this.size>1) { //decrease brush size with '['
 				this.size--;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);
 			}
-			if (keyCode==93 && this.size<100) { //increase brush size with ']'
+			if (key==']' && this.size<100) { //increase brush size with ']'
 				this.size++;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);
@@ -40,7 +74,7 @@ function SprayCanTool(){
 		})
 	};
 
-	this.mirrorDraw = function(previousMouseX, previousMouseY, mouseX, mouseY) {
+	this.mirrorDraw = function(mouseX, mouseY) {
 		for(var i = 0; i < this.points; i++){
 			point(random(mouseX-this.size, mouseX + this.size), 
 			random(mouseY-this.size, mouseY+this.size));

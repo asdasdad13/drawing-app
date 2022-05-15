@@ -31,12 +31,12 @@ function RectangleTool(){
 		}
 
 		if (keyIsPressed){
-			if (keyCode==91 && this.size>1) { //decrease brush size with '['
+			if (key=='[' && this.size>1) { //decrease brush size with '['
 				this.size--;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);
 			}
-			if (keyCode==93 && this.size<100) { //increase brush size with ']'
+			if (key==']' && this.size<100) { //increase brush size with ']'
 				this.size++;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);

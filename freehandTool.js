@@ -10,16 +10,45 @@ function FreehandTool(){
 	//we haven't started drawing yet.
 	var previousMouseX = -1;
 	var previousMouseY = -1;
+	var drawing = false;
 
 	this.draw = function(){
 		strokeWeight(this.size);
+		if (keyIsPressed && key=='') { //shift key down; draw straight line
+			if(mouseIsPressed && checkWithinCanvas()){
+				//if it's the start of drawing a new line
+				if(previousMouseX == -1){
+					previousMouseX = mouseX;
+					previousMouseY = mouseY;
+					drawing = true;
+					//save the current pixel Array
+					loadPixels();
+				}
+	
+				else{
+					//update the screen with the saved pixels to hide any previous line between mouse pressed and released
+					updatePixels();
+					//draw the line
+					line(previousMouseX, previousMouseY, mouseX, mouseY);
+				}
+	
+			}
+	
+			else if(drawing){
+				//save the pixels with the most recent line and reset the
+				//drawing bool and start locations
+				loadPixels();
+				drawing = false;
+				previousMouseX = -1;
+				previousMouseY = -1;
+			}
+		}
 		//if the mouse is pressed
-		if(mouseIsPressed && checkWithinCanvas()){
+		else if(mouseIsPressed && checkWithinCanvas()){
 			//check if they previousX and Y are -1. set them to the current ouse X and Y if they are.
 			if (previousMouseX == -1){
 				previousMouseX = mouseX;
 				previousMouseY = mouseY;
-				saveState(); //allows for undoing/redoing
 			}
 			//if we already have values for previousX and Y we can draw a line from 
 			//there to the current mouse location
@@ -35,12 +64,12 @@ function FreehandTool(){
 			previousMouseY = -1;
 		}
 		if (keyIsPressed){
-			if (keyCode==91 && this.size>1) { //decrease brush size with '['
+			if (key=='[' && this.size>1) { //decrease brush size with '['
 				this.size--;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);
 			}
-			if (keyCode==93 && this.size<100) { //increase brush size with ']'
+			if (key==']' && this.size<100) { //increase brush size with ']'
 				this.size++;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);

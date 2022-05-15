@@ -5,12 +5,14 @@ var colourP = null;
 var helpers = null;
 var stateHistory = [];
 var stateFuture = [];
+var stampImagesAr = Array(10);
 
 function setup() {
 	//create a canvas to fill the content div from index.html
 	canvasContainer = select('#content');
 	var c = createCanvas(canvasContainer.size().width, canvasContainer.size().height); //canvas size resizes automaticcally based on user's screen res
 	c.parent("content");
+	
 	//display initial canvas width
 	select('#canvasWidthInfo').html(width + ' x ' + height);
 
@@ -47,6 +49,10 @@ function checkWithinCanvas(x,y) { //check that user mouse is on canvas, if it is
 	return (mouseX>=0 && mouseX<=canvasContainer.size().width && mouseY>=0 && mouseY<=canvasContainer.size().height)
 }
 
+function mousePressed() {
+	if (checkWithinCanvas()) saveState(); //allows for undoing/redoing, condition excludes clicking on tool icons
+}
+
 function keyPressed(e) {
     if (e.ctrlKey && (e.key == 'z' || e.key == 'Z')) { //undo
 		undo();
@@ -58,8 +64,10 @@ function keyPressed(e) {
 }
 
 function undo() {
-	stateFuture.push(get());
-	pixels = set(0,0,stateHistory.pop());
+	if (stateHistory.length != 0) {
+		stateFuture.push(get());
+		pixels = set(0,0,stateHistory.pop());
+	}
 }
 
 function redo() {
