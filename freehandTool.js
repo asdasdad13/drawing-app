@@ -19,8 +19,7 @@ function FreehandTool(){
 			if (previousMouseX == -1){
 				previousMouseX = mouseX;
 				previousMouseY = mouseY;
-				saveState();
-				console.log(stateHistory)
+				saveState(); //allows for undoing/redoing
 			}
 			//if we already have values for previousX and Y we can draw a line from 
 			//there to the current mouse location

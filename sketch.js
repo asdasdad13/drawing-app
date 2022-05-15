@@ -3,9 +3,7 @@
 var toolbox = null;
 var colourP = null;
 var helpers = null;
-var stateHistory = []; //for undoing and redoing
-var stateFuture = [];
-
+var stateHistory = [];
 function setup() {
 	//create a canvas to fill the content div from index.html
 	canvasContainer = select('#content');
@@ -59,14 +57,11 @@ function keyPressed(e) {
 }
 
 function undo() {
-	stateFuture.push(stateHistory[stateHistory.length-1]);
-	pixels = stateHistory.pop();
-	updatePixels();
+	pixels = set(0,0,stateHistory.pop());
 }
 
 function redo() { //?
-	stateHistory.push(stateFuture.pop())
-	pixels = stateHistory[stateHistory.length-1];
+	pixels = stateHistory.pop();
 	updatePixels();
 }
 

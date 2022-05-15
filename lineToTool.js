@@ -22,6 +22,7 @@ function LineToTool(){
 				startMouseY = mouseY;
 				drawing = true;
 				//save the current pixel Array
+				saveState(); //allows for undoing/redoing
 				loadPixels();
 			}
 
