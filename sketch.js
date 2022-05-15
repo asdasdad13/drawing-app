@@ -3,6 +3,7 @@
 var toolbox = null;
 var colourP = null;
 var helpers = null;
+var blankCanvas;
 var stateHistory = [];
 var stateFuture = [];
 var stampImagesAr = Array(10);
@@ -12,7 +13,7 @@ function setup() {
 	canvasContainer = select('#content');
 	var c = createCanvas(canvasContainer.size().width, canvasContainer.size().height); //canvas size resizes automaticcally based on user's screen res
 	c.parent("content");
-	
+
 	//display initial canvas width
 	select('#canvasWidthInfo').html(width + ' x ' + height);
 
@@ -30,7 +31,9 @@ function setup() {
 	toolbox.addTool(new MirrorDrawTool());
 	toolbox.addTool(new RectangleTool());
 	toolbox.addTool(new EllipseTool());
-	background(255);
+
+	background(255); //background must be present or undo/redo will not work
+	blankCanvas = get(); //for resetting canvas to clean white image when cleared
 }
 
 function draw() {
@@ -51,6 +54,7 @@ function checkWithinCanvas(x,y) { //check that user mouse is on canvas, if it is
 
 function mousePressed() {
 	if (checkWithinCanvas()) saveState(); //allows for undoing/redoing, condition excludes clicking on tool icons
+	console.log(9)
 }
 
 function keyPressed(e) {
@@ -60,7 +64,6 @@ function keyPressed(e) {
 	if (e.ctrlKey && (e.key == 'y' || e.key == 'Y')) { //redo
 		redo();
 	}
-	if (e.key=='x') console.log(stateFuture)
 }
 
 function undo() {

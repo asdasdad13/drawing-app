@@ -19,9 +19,6 @@ function MirrorDrawTool() {
 
 	this.draw = function() {
 		strokeWeight(this.size);
-		//display the last save state of pixels
-		updatePixels();
-
 		//do the drawing if the mouse is pressed
 		if (mouseIsPressed && checkWithinCanvas()) {
 			//if the previous values are -1 set them to the current mouse location and mirrored positions
@@ -39,8 +36,7 @@ function MirrorDrawTool() {
 				previousMouseX = mouseX;
 				previousMouseY = mouseY;
 
-				//these are for the mirrored drawing the other side of the
-				//line of symmetry
+				//these are for the mirrored drawing the other side of the line of symmetry
 				var oX = this.calculateOpposite(mouseX, "x");
 				var oY = this.calculateOpposite(mouseY, "y");
 				line(previousOppositeMouseX, previousOppositeMouseY, oX, oY);
@@ -82,22 +78,6 @@ function MirrorDrawTool() {
 			toolSizeSlider.value(toolSizeInput.value());
 			self.size = toolSizeInput.value();
 		})
-
-		//after the drawing is done save the pixel state. We don't want the line of symmetry to be part of our drawing
-		loadPixels();
-
-		//push the drawing state so that we can set the stroke weight and colour
-		push();
-		strokeWeight(3);
-		stroke("red");
-		//draw the line of symmetry
-		if (this.axis == "x") {
-			line(width / 2, 0, width / 2, height);
-		} else {
-			line(0, height / 2, width, height / 2);
-		}
-		//return to the original stroke
-		pop();
 	};
 
 	/*calculate an opposite coordinate the other side of the
@@ -125,23 +105,22 @@ function MirrorDrawTool() {
 
 	//when the tool is deselected update the pixels to just show the drawing and hide the line of symmetry.
 	this.unselectTool = function() {
-		updatePixels();
 		select("#tool-size").remove();
+		select('#lineOfSymmetry').style('display', 'none');
 	};
 
 	this.adjustOrientation = function() {
-		if (this.axis == 'x') { //switch to vert symmetry (left and right)
+		if (this.axis == 'x') { //switch to vert symmetry (top and bottom)
 			this.axis = 'y';
 			this.lineOfSymmetry = height / 2;
 			var i = document.querySelector('#mirrorDrawsideBarItem img');
 			i.style.transform = 'rotate(90deg)';
 		}
 		else {
-			this.axis = 'x'; //vert symmetry
+			this.axis = 'x'; //switch to hori symmetry
 			this.lineOfSymmetry = width / 2;
 			var i = document.querySelector('#mirrorDrawsideBarItem img');
 			i.style.transform = 'rotate(0deg)';
-			select('#mirrorDrawsideBarItem').style('border','0');
 		}
 	}
 
@@ -160,4 +139,24 @@ function MirrorDrawTool() {
 		toolSizeInput.attribute('type', 'number')
 		toolSizeInput.parent('tool-size');
 	};
+
+	this.adjustLOS = function() { //adjust line of symmetry as seen on the canvas
+		var los = select('#lineOfSymmetry');
+		var c = select('#content');
+		if (this.axis == 'x') { //when symmetry is hori
+			los.style('border-bottom', '0');
+			los.style('border-right', '0.2vw dashed black');
+			los.style('width', '0'); 
+			los.style('height', c.size().height +'px'); //adjust line of symmetry as seen on the canvas
+			los.style('top', 'initial');
+			los.style('left', c.size().width/2 + select('#sidebar').size().width + 'px');
+		} else { //when symmetry is vert
+			los.style('border-right', '0');
+			los.style('border-bottom', '0.2vw dashed black');
+			los.style('height', '0');
+			los.style('width', c.size().width +'px');
+			los.style('top', c.size().height/2 + select('#top-menu').size().height + 'px');
+			los.style('left', select('#sidebar').size().width + 'px');
+		}
+	}
 }

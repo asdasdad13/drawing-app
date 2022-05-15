@@ -17,25 +17,21 @@ function SprayCanTool(){
 					previousMouseX = mouseX;
 					previousMouseY = mouseY;
 					drawing = true;
-					//save the current pixel Array
-					loadPixels();
 				}
 	
 				else{
-					//update the screen with the saved pixels to hide any previous line between mouse pressed and released
-					updatePixels();
 					//draw the line
-					for(var i = 0; i < dist(previousMouseX,previousMouseY,mouseX,mouseY)/(this.size/20); i++){
-						point(random(previousMouseX-this.size, mouseX + this.size), random(mouseY-this.size, mouseY+this.size));
+					for(var i = 0; i < dist(previousMouseX,previousMouseY,mouseX,mouseY)/(this.size**0.1); i++){
+						var xDiff = previousMouseX - mouseX;
+						var yDiff = previousMouseY - mouseY;
+						point(random(previousMouseX + xDiff - this.size, mouseX + this.size), random(mouseY + yDiff-this.size, mouseY+this.size));
 					}
 				}
 	
 			}
 	
 			else if(drawing){
-				//save the pixels with the most recent line and reset the
-				//drawing bool and start locations
-				loadPixels();
+				//reset the drawing bool and start locations
 				drawing = false;
 				previousMouseX = -1;
 				previousMouseY = -1;

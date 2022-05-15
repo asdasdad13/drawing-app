@@ -84,3 +84,18 @@ p {
 div {
 	font-size: 20px;
 }
+
+canvas {
+	background: rgb(255, 255, 255);
+}
+
+#lineOfSymmetry {
+	position: absolute;
+	opacity: 40%;
+	/* only visible when mirrorDrawTool is active */
+	display: none;
+}
+
+.content {
+	text-align: center;
+}

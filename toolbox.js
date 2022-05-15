@@ -52,8 +52,13 @@ function Toolbox() {
 				}
 				//select the tool and highlight it on the toolbar
 				if (toolName == 'mirrorDraw' && this.selectedTool.name == 'mirrorDraw') this.selectedTool.adjustOrientation(); // if mirrorDraw is active, this click changes the orientation of the symmetry line
+
 				this.selectedTool = this.tools[i];
-				if (toolName == 'mirrorDraw') select("#" + toolName + "sideBarItem").style("border", "2px solid cyan");
+				if (toolName == 'mirrorDraw') {
+					select('#lineOfSymmetry').style('display', 'block');
+					this.selectedTool.adjustLOS();
+					select("#" + toolName + "sideBarItem").style("border", "2px solid cyan");
+				}
 				else select("#" + toolName + "sideBarItem").style("border", "2px solid red");
 		
 				//if the tool has an options area. Populate it now.
