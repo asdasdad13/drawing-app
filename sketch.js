@@ -4,6 +4,8 @@ var toolbox = null;
 var colourP = null;
 var helpers = null;
 var stateHistory = [];
+var stateFuture = [];
+
 function setup() {
 	//create a canvas to fill the content div from index.html
 	canvasContainer = select('#content');
@@ -52,17 +54,22 @@ function keyPressed(e) {
 	if (e.ctrlKey && (e.key == 'y' || e.key == 'Y')) { //redo
 		redo();
 	}
+	if (e.key=='x') console.log(stateFuture)
 }
 
 function undo() {
+	stateFuture.push(get());
 	pixels = set(0,0,stateHistory.pop());
 }
 
-function redo() { //?
-	pixels = stateHistory.pop();
-	updatePixels();
+function redo() {
+	if (stateFuture.length != 0) {
+		stateHistory.push(get());
+		pixels = set(0,0,stateFuture.pop());
+	}
 }
 
 function saveState() {
 	stateHistory.push(get());
+	stateFuture = [];
 }
