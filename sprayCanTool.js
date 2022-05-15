@@ -25,8 +25,8 @@ function SprayCanTool(){
 					//update the screen with the saved pixels to hide any previous line between mouse pressed and released
 					updatePixels();
 					//draw the line
-					for(var i = 0; i < (this.size/2)*(dist(previousMouseX,previousMouseY,mouseX,mouseY)%this.size); i++){
-						point(random(mouseX-this.size, mouseX + this.size), random(mouseY-this.size, mouseY+this.size));
+					for(var i = 0; i < dist(previousMouseX,previousMouseY,mouseX,mouseY)/(this.size/20); i++){
+						point(random(previousMouseX-this.size, mouseX + this.size), random(mouseY-this.size, mouseY+this.size));
 					}
 				}
 	
@@ -73,13 +73,6 @@ function SprayCanTool(){
 			self.size = Number(toolSizeInput.value());
 		})
 	};
-
-	this.mirrorDraw = function(mouseX, mouseY) {
-		for(var i = 0; i < this.points; i++){
-			point(random(mouseX-this.size, mouseX + this.size), 
-			random(mouseY-this.size, mouseY+this.size));
-		}
-	}
 	
 	this.unselectTool = function() {
 		select("#tool-size").remove();
