@@ -27,8 +27,6 @@ function setup() {
 	toolbox.addTool(new RectangleTool());
 	toolbox.addTool(new EllipseTool());
 	background(255);
-
-	history = [];
 }
 
 function draw() {
