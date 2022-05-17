@@ -7,6 +7,11 @@ var blankCanvas;
 var stateHistory = [];
 var stateFuture = [];
 var stampImagesAr = Array(10);
+var sparkles;
+
+function preload() {
+	sparkles = loadImage('./assets/sparkles.png');
+}
 
 function setup() {
 	//create a canvas to fill the content div from index.html
@@ -31,6 +36,7 @@ function setup() {
 	toolbox.addTool(new MirrorDrawTool());
 	toolbox.addTool(new RectangleTool());
 	toolbox.addTool(new EllipseTool());
+	toolbox.addTool(new StampTool());
 
 	background(255); //background must be present or undo/redo will not work
 	blankCanvas = get(); //for resetting canvas to clean white image when cleared
@@ -38,8 +44,6 @@ function setup() {
 
 function draw() {
 	//call the draw function from the selected tool.
-	//hasOwnProperty is a javascript function that tests
-	//if an object contains a particular method or property
 	//if there isn't a draw method the app will alert the user
 	if (toolbox.selectedTool.hasOwnProperty("draw")) {
 		toolbox.selectedTool.draw();
@@ -54,7 +58,6 @@ function checkWithinCanvas(x,y) { //check that user mouse is on canvas, if it is
 
 function mousePressed() {
 	if (checkWithinCanvas()) saveState(); //allows for undoing/redoing, condition excludes clicking on tool icons
-	console.log(9)
 }
 
 function keyPressed(e) {

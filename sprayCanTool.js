@@ -17,9 +17,11 @@ function SprayCanTool(){
 					previousMouseX = mouseX;
 					previousMouseY = mouseY;
 					drawing = true;
+					loadPixels(); //save the current pixel array
 				}
 	
 				else{
+					updatePixels();
 					//draw the line
 					for(var i = 0; i < dist(previousMouseX,previousMouseY,mouseX,mouseY)/(this.size**0.1); i++){
 						var xDiff = previousMouseX - mouseX;
@@ -75,6 +77,8 @@ function SprayCanTool(){
 	}
 
 	this.populateOptions = function() {
+		//add spacing option
+		
 		//add html element for brush size slider
 		var d = createDiv();
 		d.id('tool-size');
