@@ -7,7 +7,6 @@ function StampTool(){
 
 	this.draw = function(){
 		if(mouseIsPressed && checkWithinCanvas()){ //if mouse is pressed
-			console.log(0)
 			image(sparkles,mouseX-this.size/2,mouseY-this.size/2,this.size,this.size);
 		}
 	};

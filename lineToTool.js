@@ -13,7 +13,6 @@ function LineToTool(){
 	//draws the line to the screen 
 	this.draw = function(){
 		strokeWeight(this.size);
-
 		//only draw when mouse is clicked
 		if(mouseIsPressed && checkWithinCanvas()){
 			//if it's the start of drawing a new line
@@ -29,7 +28,15 @@ function LineToTool(){
 				//update the screen with the saved pixels to hide any previous line between mouse pressed and released
 				updatePixels();
 				//draw the line
-				line(startMouseX, startMouseY, mouseX, mouseY);
+				if (keyIsPressed && key=='') { //shift key down; draw 90deg straight line
+					//determines whether user is trying to make a vertical or horizontal line based on mouse distance and direction
+					if (abs(mouseX - startMouseX) > abs(mouseY - startMouseY)) {  //trying to draw hori line
+						line(startMouseX, startMouseY, mouseX, startMouseY);
+					} else {
+						line(startMouseX, startMouseY, startMouseX, mouseY); //trying to draw vert line
+					}
+				}
+				else line(startMouseX, startMouseY, mouseX, mouseY); //draw normal straight line, any deg
 			}
 
 		}
