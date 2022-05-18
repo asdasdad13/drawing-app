@@ -10,8 +10,9 @@ function SprayCanTool(){
 
 	this.draw = function(){
         strokeWeight(this.size/25);
-		if (keyIsPressed && key=='') { //shift key down; draw straight line
-			if(mouseIsPressed && checkWithinCanvas()){
+        //if the mouse is pressed paint on the canvas
+        if(mouseIsPressed && checkWithinCanvas()){
+			if (keyIsPressed && key=='') { //shift key down; draw straight line
 				//if it's the start of drawing a new line
 				if(previousMouseX == -1){
 					previousMouseX = mouseX;
@@ -19,41 +20,34 @@ function SprayCanTool(){
 					drawing = true;
 					loadPixels(); //save the current pixel array
 				}
-	
-				else{
+				else {
 					updatePixels();
 					//draw the line
 					for (j=0;j<this.size;j++) {
 						if (abs(mouseX - previousMouseX) > abs(mouseY - previousMouseY)) { //x axis changes more
-							var x = ceil((previousMouseX - mouseX)/this.size);
-							var xDiff = (previousMouseX - mouseX)/x
-							var yDiff = (previousMouseY - mouseY)/x;
-							this.renderAlternate(previousMouseX,mouseX,xDiff,yDiff);
+							var spacing = ceil((previousMouseX - mouseX)/this.size); 
+							this.renderAlternate(previousMouseX,mouseX,(previousMouseX - mouseX)/spacing,(previousMouseY - mouseY)/spacing);
 						}
 						else { //y axis changes more
-							var x = ceil((previousMouseY - mouseY)/this.size);
-							var xDiff = (previousMouseX - mouseX)/x
-							var yDiff = (previousMouseY - mouseY)/x;
-							this.renderAlternate(previousMouseY,mouseY,xDiff,yDiff);
+							var spacing = ceil((previousMouseY - mouseY)/this.size); 
+							this.renderAlternate(previousMouseY,mouseY,(previousMouseX - mouseX)/spacing,(previousMouseY - mouseY)/spacing);
 						}
 					}
 				}
-	
 			}
-	
-			else if(drawing){
-				//reset the drawing bool and start locations
-				drawing = false;
-				previousMouseX = -1;
-				previousMouseY = -1;
+			else {
+				for(var i = 0; i < this.size/2; i++){
+					point(random(mouseX-this.size, mouseX + this.size), random(mouseY-this.size, mouseY+this.size));
+				}
 			}
-		}
-        //if the mouse is pressed paint on the canvas
-        else if(mouseIsPressed && checkWithinCanvas()){
-            for(var i = 0; i < this.size/2; i++){
-                point(random(mouseX-this.size, mouseX + this.size), random(mouseY-this.size, mouseY+this.size));
-            }
         }
+		
+		else if(drawing){
+			//reset the drawing bool and start locations
+			drawing = false;
+			previousMouseX = -1;
+			previousMouseY = -1;
+		}
 
         if (keyIsPressed){
 			if (key=='[' && this.size>1) { //decrease brush size with '['
