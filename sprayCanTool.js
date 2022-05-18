@@ -23,42 +23,20 @@ function SprayCanTool(){
 				else{
 					updatePixels();
 					//draw the line
-					
-
-					if (abs(mouseX - previousMouseX) > abs(mouseY - previousMouseY)) { //x axis changes more
-						var x = ceil((previousMouseX - mouseX)/this.size);
-						var xDiff = (previousMouseX - mouseX)/x
-						var yDiff = (previousMouseY - mouseY)/x;
-						if (mouseX > previousMouseX) { //for loop is increasing
-							for (var i = 0; i < ceil((mouseX-previousMouseX)/this.size); i++) {//number of sample spots
-								ellipse(previousMouseX+i*xDiff, previousMouseY+i*yDiff,40);
-							}
+					for (j=0;j<this.size;j++) {
+						if (abs(mouseX - previousMouseX) > abs(mouseY - previousMouseY)) { //x axis changes more
+							var x = ceil((previousMouseX - mouseX)/this.size);
+							var xDiff = (previousMouseX - mouseX)/x
+							var yDiff = (previousMouseY - mouseY)/x;
+							this.renderAlternate(previousMouseX,mouseX,xDiff,yDiff);
 						}
-						else { //for loop is decreasing
-							for (var i = 0; i > ceil((mouseX-previousMouseX-this.size*2)/this.size); i--) {//number of sample spots
-								ellipse(previousMouseX+i*xDiff, previousMouseY+i*yDiff,40);
-							}
-						}
-					} else { //y axis changes more
-						var x = ceil((previousMouseY - mouseY)/this.size);
-						var xDiff = (previousMouseX - mouseX)/x
-						var yDiff = (previousMouseY - mouseY)/x;
-						if (mouseY > previousMouseY) { //for loop is increasing
-							for (var i = 0; i < ceil((mouseY-previousMouseY)/this.size); i++) {//number of sample spots
-								ellipse(previousMouseX+i*xDiff, previousMouseY+i*yDiff,40);
-							}
-						}
-						else { //for loop is decreasing
-							for (var i = 0; i > ceil((mouseY-previousMouseY-this.size*2)/this.size); i--) {//number of sample spots
-								ellipse(previousMouseX+i*xDiff, previousMouseY+i*yDiff,40);
-							}
+						else { //y axis changes more
+							var x = ceil((previousMouseY - mouseY)/this.size);
+							var xDiff = (previousMouseX - mouseX)/x
+							var yDiff = (previousMouseY - mouseY)/x;
+							this.renderAlternate(previousMouseY,mouseY,xDiff,yDiff);
 						}
 					}
-					// for(var i = 0; i < ceil(abs(previousMouseX - mouseX)/this.size); i++) {
-					// 	var a = abs(previousMouseX - mouseX);
-					// 	var b = abs(previousMouseY - mouseY);
-					// 	point(random(a-this.size, a+this.size), random(b-this.size, b+this.size));
-					// }
 				}
 	
 			}
@@ -102,6 +80,19 @@ function SprayCanTool(){
 			self.size = Number(toolSizeInput.value());
 		})
 	};
+
+	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
+		if (prevMouseCoord < currMouseCoord) { //for loop is increasing
+			for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
+				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
+			}
+		}
+		else { //for loop is decrasing
+			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord)/this.size); i--) {//number of sample spots
+				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
+			}
+		}
+	}
 	
 	this.unselectTool = function() {
 		select("#tool-size").remove();
