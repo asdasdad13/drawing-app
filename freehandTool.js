@@ -14,48 +14,31 @@ function FreehandTool(){
 
 	this.draw = function(){
 		strokeWeight(this.size);
-		if (keyIsPressed && key=='') { //shift key down; draw straight line
-			if(mouseIsPressed && checkWithinCanvas()){
-				//if it's the start of drawing a new line
-				if(previousMouseX == -1){
-					previousMouseX = mouseX;
-					previousMouseY = mouseY;
-					drawing = true;
-					//save the current pixel Array
-					loadPixels();
-				}
-	
-				else{
-					//update the screen with the saved pixels to hide any previous line between mouse pressed and released
-					updatePixels();
-					//draw the line
-					line(previousMouseX, previousMouseY, mouseX, mouseY);
-				}
-	
-			}
-	
-			else if(drawing){
-				//save the pixels with the most recent line and reset the
-				//drawing bool and start locations
-				loadPixels();
-				drawing = false;
-				previousMouseX = -1;
-				previousMouseY = -1;
-			}
-		}
 		//if the mouse is pressed
-		else if(mouseIsPressed && checkWithinCanvas()){
+		if(mouseIsPressed && checkWithinCanvas()){
 			//check if they previousX and Y are -1. set them to the current ouse X and Y if they are.
 			if (previousMouseX == -1){
 				previousMouseX = mouseX;
 				previousMouseY = mouseY;
+				if(keyIsPressed && key=='') {
+					drawing = true;
+					//save the current pixel Array
+					loadPixels();
+				}
 			}
 			//if we already have values for previousX and Y we can draw a line from 
 			//there to the current mouse location
 			else{
-				line(previousMouseX, previousMouseY, mouseX, mouseY);
-				previousMouseX = mouseX;
-				previousMouseY = mouseY;
+				if(keyIsPressed && key=='') {
+					//update the screen with the saved pixels to hide any previous line between mouse pressed and released
+					updatePixels();
+					//draw the line
+					line(previousMouseX, previousMouseY, mouseX, mouseY);
+				} else {
+					line(previousMouseX, previousMouseY, mouseX, mouseY);
+					previousMouseX = mouseX;
+					previousMouseY = mouseY;
+				}
 			}
 		}
 		//if the user has released the mouse we want to set the previousMouse values back to -1.
