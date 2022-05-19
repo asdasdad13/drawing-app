@@ -168,7 +168,7 @@ function StampTool(){
 				self.fixedSpacing = true;
 				toolSpacingSlider.removeAttribute('disabled');
 				toolSpacingInput.removeAttribute('disabled');
-				b.style('color','initial');
+				b.style('color','#FFF');
 			}
 			else {
 				self.fixedSpacing = false;
