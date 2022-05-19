@@ -48,7 +48,23 @@ function SprayCanTool(){
 			previousMouseX = -1;
 			previousMouseY = -1;
 		}
+		this.checkSizeChanged();
+	};
 
+	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
+		if (prevMouseCoord < currMouseCoord) { //for loop is increasing
+			for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
+				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
+			}
+		}
+		else { //for loop is decrasing
+			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord)/this.size); i--) {//number of sample spots
+				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
+			}
+		}
+	}
+
+	this.checkSizeChanged = function() {
         if (keyIsPressed){
 			if (key=='[' && this.size>1) { //decrease brush size with '['
 				this.size--;
@@ -73,20 +89,8 @@ function SprayCanTool(){
 			toolSizeSlider.value(Number(toolSizeInput.value()));
 			self.size = Number(toolSizeInput.value());
 		})
-	};
-
-	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
-		if (prevMouseCoord < currMouseCoord) { //for loop is increasing
-			for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
-				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
-			}
-		}
-		else { //for loop is decrasing
-			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord)/this.size); i--) {//number of sample spots
-				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
-			}
-		}
 	}
+
 	
 	this.unselectTool = function() {
 		select("#tool-size").remove();

@@ -5,6 +5,7 @@ function StampTool(){
 	var previousMouseX = -1; //-1 is the null value
 	var previousMouseY = -1;
 	var drawing = false;
+	var self = this;
 
 	this.draw = function(){
 		if(mouseIsPressed && checkWithinCanvas()){ //if mouse is pressed
@@ -36,6 +37,7 @@ function StampTool(){
 			}
 			else image(sparkles,mouseX-this.size/2,mouseY-this.size/2,this.size,this.size);
 		}
+		this.checkSizeChanged();
 	};
 
 	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
@@ -49,6 +51,33 @@ function StampTool(){
 				image(sparkles,previousMouseX+i*xDiff, previousMouseY+i*yDiff,this.size,this.size);
 			}
 		}
+	}
+
+	this.checkSizeChanged = function() {
+        if (keyIsPressed){
+			if (key=='[' && this.size>1) { //decrease brush size with '['
+				this.size--;
+				toolSizeSlider.value(this.size); //update slider and input field values
+				toolSizeInput.value(this.size);
+			}
+			if (key==']' && this.size<100) { //increase brush size with ']'
+				this.size++;
+				toolSizeSlider.value(this.size); //update slider and input field values
+				toolSizeInput.value(this.size);
+			}
+		}
+
+		if (toolSizeInput.value()>100) toolSizeInput.value(100); //min and max limits for toolSizeInput
+		if (toolSizeInput.value()<1) toolSizeInput.value(1);
+
+		toolSizeSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
+			toolSizeInput.value(toolSizeSlider.value());
+			self.size = toolSizeSlider.value();
+		})
+		toolSizeInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
+			toolSizeSlider.value(Number(toolSizeInput.value()));
+			self.size = Number(toolSizeInput.value());
+		})
 	}
 	
 	this.unselectTool = function() {

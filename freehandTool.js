@@ -10,6 +10,7 @@ function FreehandTool(){
 	//we haven't started drawing yet.
 	var previousMouseX = -1;
 	var previousMouseY = -1;
+	var self = this;
 
 	this.draw = function(){
 		strokeWeight(this.size);
@@ -41,7 +42,11 @@ function FreehandTool(){
 			previousMouseX = -1;
 			previousMouseY = -1;
 		}
-		if (keyIsPressed){
+		this.checkSizeChanged();
+	};
+
+	this.checkSizeChanged = function() {
+        if (keyIsPressed){
 			if (key=='[' && this.size>1) { //decrease brush size with '['
 				this.size--;
 				toolSizeSlider.value(this.size); //update slider and input field values
@@ -57,16 +62,15 @@ function FreehandTool(){
 		if (toolSizeInput.value()>100) toolSizeInput.value(100); //min and max limits for toolSizeInput
 		if (toolSizeInput.value()<1) toolSizeInput.value(1);
 
-		var self = this;
 		toolSizeSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
 			toolSizeInput.value(toolSizeSlider.value());
 			self.size = toolSizeSlider.value();
 		})
 		toolSizeInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
-			toolSizeSlider.value(toolSizeInput.value());
-			self.size = toolSizeInput.value();
+			toolSizeSlider.value(Number(toolSizeInput.value()));
+			self.size = Number(toolSizeInput.value());
 		})
-	};
+	}
 
 	this.unselectTool = function() {
 		select("#tool-size").remove();

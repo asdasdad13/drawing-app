@@ -9,6 +9,7 @@ function LineToTool(){
 	var startMouseX = -1;
 	var startMouseY = -1;
 	var drawing = false;
+	var self = this;
 
 	//draws the line to the screen 
 	this.draw = function(){
@@ -75,7 +76,35 @@ function LineToTool(){
 			toolSizeSlider.value(toolSizeInput.value());
 			self.size = toolSizeInput.value();
 		})
+		this.checkSizeChanged();
 	};
+
+	this.checkSizeChanged = function() {
+        if (keyIsPressed){
+			if (key=='[' && this.size>1) { //decrease brush size with '['
+				this.size--;
+				toolSizeSlider.value(this.size); //update slider and input field values
+				toolSizeInput.value(this.size);
+			}
+			if (key==']' && this.size<100) { //increase brush size with ']'
+				this.size++;
+				toolSizeSlider.value(this.size); //update slider and input field values
+				toolSizeInput.value(this.size);
+			}
+		}
+
+		if (toolSizeInput.value()>100) toolSizeInput.value(100); //min and max limits for toolSizeInput
+		if (toolSizeInput.value()<1) toolSizeInput.value(1);
+
+		toolSizeSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
+			toolSizeInput.value(toolSizeSlider.value());
+			self.size = toolSizeSlider.value();
+		})
+		toolSizeInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
+			toolSizeSlider.value(Number(toolSizeInput.value()));
+			self.size = Number(toolSizeInput.value());
+		})
+	}
 	
 	this.unselectTool = function() {
 		select("#tool-size").remove();

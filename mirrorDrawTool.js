@@ -3,6 +3,7 @@ function MirrorDrawTool() {
 	this.icon = "assets/mirrorDraw.png";
 	this.size = 3;
 	var drawing = false;
+	var self = this;
 
 	//which axis is being mirrored (x or y) x is default
 	this.axis = "x";
@@ -64,32 +65,7 @@ function MirrorDrawTool() {
 			previousOppositeMouseX = -1;
 			previousOppositeMouseY = -1;
 		}
-
-		if (keyIsPressed){
-			if (key=='[' && this.size>1) { //decrease brush size with '['
-				this.size--;
-				toolSizeSlider.value(this.size); //update slider and input field values
-				toolSizeInput.value(this.size);
-			}
-			if (key==']' && this.size<100) { //increase brush size with ']'
-				this.size++;
-				toolSizeSlider.value(this.size); //update slider and input field values
-				toolSizeInput.value(this.size);
-			}
-		}
-
-		if (toolSizeInput.value()>100) toolSizeInput.value(100); //min and max limits for toolSizeInput
-		if (toolSizeInput.value()<1) toolSizeInput.value(1);
-
-		var self = this;
-		toolSizeSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
-			toolSizeInput.value(toolSizeSlider.value());
-			self.size = toolSizeSlider.value();
-		})
-		toolSizeInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
-			toolSizeSlider.value(toolSizeInput.value());
-			self.size = toolSizeInput.value();
-		})
+		this.checkSizeChanged();
 	};
 
 	/*calculate an opposite coordinate the other side of the
@@ -114,6 +90,33 @@ function MirrorDrawTool() {
 			return this.lineOfSymmetry - (n - this.lineOfSymmetry);
 		}
 	};
+
+	this.checkSizeChanged = function() {
+        if (keyIsPressed){
+			if (key=='[' && this.size>1) { //decrease brush size with '['
+				this.size--;
+				toolSizeSlider.value(this.size); //update slider and input field values
+				toolSizeInput.value(this.size);
+			}
+			if (key==']' && this.size<100) { //increase brush size with ']'
+				this.size++;
+				toolSizeSlider.value(this.size); //update slider and input field values
+				toolSizeInput.value(this.size);
+			}
+		}
+
+		if (toolSizeInput.value()>100) toolSizeInput.value(100); //min and max limits for toolSizeInput
+		if (toolSizeInput.value()<1) toolSizeInput.value(1);
+
+		toolSizeSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
+			toolSizeInput.value(toolSizeSlider.value());
+			self.size = toolSizeSlider.value();
+		})
+		toolSizeInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
+			toolSizeSlider.value(Number(toolSizeInput.value()));
+			self.size = Number(toolSizeInput.value());
+		})
+	}
 
 	//when the tool is deselected update the pixels to just show the drawing and hide the line of symmetry.
 	this.unselectTool = function() {
