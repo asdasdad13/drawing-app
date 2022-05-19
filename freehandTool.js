@@ -10,7 +10,6 @@ function FreehandTool(){
 	//we haven't started drawing yet.
 	var previousMouseX = -1;
 	var previousMouseY = -1;
-	var drawing = false;
 
 	this.draw = function(){
 		strokeWeight(this.size);
@@ -20,11 +19,7 @@ function FreehandTool(){
 			if (previousMouseX == -1){
 				previousMouseX = mouseX;
 				previousMouseY = mouseY;
-				if(keyIsPressed && key=='') {
-					drawing = true;
-					//save the current pixel Array
-					loadPixels();
-				}
+				if(keyIsPressed && key=='') loadPixels();
 			}
 			//if we already have values for previousX and Y we can draw a line from 
 			//there to the current mouse location

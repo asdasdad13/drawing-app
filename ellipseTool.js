@@ -19,7 +19,8 @@ function EllipseTool(){
 
 			else{ //for rendering the line, mouse released or not
 				updatePixels(); //system function that updates canvas image with contents of [pixels] array
-				ellipse(startMouseX, startMouseY, (mouseX-startMouseX)*2, (mouseY-startMouseY)*2); //a line is rendered from starting point to current mouse position, mouse released or not
+				if (keyIsPressed && key=='') ellipse(startMouseX, startMouseY, (mouseX-startMouseX)*2); //shift key down; draw straight line
+				else ellipse(startMouseX, startMouseY, (mouseX-startMouseX)*2, (mouseY-startMouseY)*2); //a line is rendered from starting point to current mouse position, mouse released or not
 			}
 
 		}

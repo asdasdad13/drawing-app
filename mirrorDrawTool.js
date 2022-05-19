@@ -2,6 +2,7 @@ function MirrorDrawTool() {
 	this.name = "mirrorDraw";
 	this.icon = "assets/mirrorDraw.png";
 	this.size = 3;
+	var drawing = false;
 
 	//which axis is being mirrored (x or y) x is default
 	this.axis = "x";
@@ -27,21 +28,32 @@ function MirrorDrawTool() {
 				previousMouseY = mouseY;
 				previousOppositeMouseX = this.calculateOpposite(mouseX, "x");
 				previousOppositeMouseY = this.calculateOpposite(mouseY, "y");
+				if(keyIsPressed && key=='') {
+					drawing = true;
+					//save the current pixel Array
+					loadPixels();
+				}
 			}
 
 			//if there are values in the previous locations
 			//draw a line between them and the current positions
 			else {
-				line(previousMouseX, previousMouseY, mouseX, mouseY);
-				previousMouseX = mouseX;
-				previousMouseY = mouseY;
-
-				//these are for the mirrored drawing the other side of the line of symmetry
 				var oX = this.calculateOpposite(mouseX, "x");
 				var oY = this.calculateOpposite(mouseY, "y");
-				line(previousOppositeMouseX, previousOppositeMouseY, oX, oY);
-				previousOppositeMouseX = oX;
-				previousOppositeMouseY = oY;
+				if(keyIsPressed && key=='') {
+					updatePixels();
+					line(previousMouseX, previousMouseY, mouseX, mouseY);
+					line(previousOppositeMouseX, previousOppositeMouseY, oX, oY);
+				} else {
+					line(previousMouseX, previousMouseY, mouseX, mouseY);
+	
+					//these are for the mirrored drawing the other side of the line of symmetry
+					line(previousOppositeMouseX, previousOppositeMouseY, oX, oY);
+					previousOppositeMouseX = oX;
+					previousOppositeMouseY = oY;
+					previousMouseX = mouseX;
+					previousMouseY = mouseY;
+				}
 			}
 		}
 		//if the mouse isn't pressed reset the previous values to -1
