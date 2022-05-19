@@ -22,8 +22,7 @@ function ColourPalette() {
 		self.selectedColour = c;
 		stroke(c);
 		this.style('text-align','center')
-		if (event.which==1) var letter = createP('S'); //left click = change selected stroke colour
-		else if (event.which==2) var letter = createP('F'); //right click = change selected fill colour
+		var letter = createP('S'); //left click = change selected stroke colour
 		letter.parent(this);
 		letter.class('swatch-letter');
 		letter.style('font-size','2rem');
@@ -49,9 +48,7 @@ function ColourPalette() {
 
 			select(".colourPalette").child(colourSwatch);
 			select("#" + colourID).style("background-color", this.colours[i]);
-			document.getElementById(colourID).onclick = function(e) {
-				console.log(e)
-			};
+			colourSwatch.mouseClicked(colourClick);
 		}
 
 		select(".colourSwatches").style("border", "2px solid blue");
