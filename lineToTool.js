@@ -114,7 +114,7 @@ function LineToTool(){
 		//add html element for brush size slider
 		var d = createDiv();
 		d.id('tool-size');
-		d.style('display','inline-block')
+		d.html('Tool radius: ')
 		d.parent('#tool-options');
 
 		toolSizeSlider = createSlider(1,100,this.size);

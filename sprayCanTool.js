@@ -58,7 +58,7 @@ function SprayCanTool(){
 			}
 		}
 		else { //for loop is decrasing
-			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord)/this.size); i--) {//number of sample spots
+			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord-this.size*2)/this.size); i--) {//number of sample spots
 				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
 			}
 		}
@@ -102,7 +102,7 @@ function SprayCanTool(){
 		//add html element for brush size slider
 		var d = createDiv();
 		d.id('tool-size');
-		d.style('display','inline-block')
+		d.html('Tool radius: ')
 		d.parent('#tool-options');
 
 		toolSizeSlider = createSlider(1,100,this.size);

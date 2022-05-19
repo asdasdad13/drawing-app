@@ -12,8 +12,8 @@ function ColourPalette() {
 
 	var colourClick = function() {
 		//remove the old border
-		var current = select("#" + self.selectedColour + "Swatch");
-		current.style("border", "0");
+		var s = document.querySelector("#" + self.selectedColour + "Swatch");
+		if (s.hasChildNodes()) s.removeChild(s.firstElementChild);
 
 		//get the new colour from the id of the clicked element
 		var c = this.id().split("Swatch")[0];
@@ -21,9 +21,13 @@ function ColourPalette() {
 		//set the selected colour and fill and stroke
 		self.selectedColour = c;
 		stroke(c);
-
-		//add a new border to the selected colour
-		this.style("border", "2px solid blue");
+		this.style('text-align','center')
+		if (event.which==1) var letter = createP('S'); //left click = change selected stroke colour
+		else if (event.which==2) var letter = createP('F'); //right click = change selected fill colour
+		letter.parent(this);
+		letter.class('swatch-letter');
+		letter.style('font-size','2rem');
+		letter.style('text-shadow','-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'); //text outline
 	}
 
 	//load in the colours
@@ -45,7 +49,9 @@ function ColourPalette() {
 
 			select(".colourPalette").child(colourSwatch);
 			select("#" + colourID).style("background-color", this.colours[i]);
-			colourSwatch.mouseClicked(colourClick)
+			document.getElementById(colourID).onclick = function(e) {
+				console.log(e)
+			};
 		}
 
 		select(".colourSwatches").style("border", "2px solid blue");

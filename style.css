@@ -96,6 +96,11 @@ canvas {
 	display: none;
 }
 
-.content {
-	text-align: center;
+#tool-options {
+	display: flex;
+	flex-direction: column;
+}
+
+input[type='checkbox'] {
+	margin-right: 0.5rem;
 }
