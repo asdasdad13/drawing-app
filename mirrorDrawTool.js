@@ -2,7 +2,6 @@ function MirrorDrawTool() {
 	this.name = "mirrorDraw";
 	this.icon = "assets/mirrorDraw.png";
 	this.size = 3;
-	var drawing = false;
 	var self = this;
 
 	//which axis is being mirrored (x or y) x is default
@@ -29,11 +28,7 @@ function MirrorDrawTool() {
 				previousMouseY = mouseY;
 				previousOppositeMouseX = this.calculateOpposite(mouseX, "x");
 				previousOppositeMouseY = this.calculateOpposite(mouseY, "y");
-				if(keyIsPressed && key=='') {
-					drawing = true;
-					//save the current pixel Array
-					loadPixels();
-				}
+				if(keyIsPressed && key=='') loadPixels(); //save the current pixel Array
 			}
 
 			//if there are values in the previous locations

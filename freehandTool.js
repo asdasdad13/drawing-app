@@ -22,8 +22,7 @@ function FreehandTool(){
 				previousMouseY = mouseY;
 				if(keyIsPressed && key=='') loadPixels();
 			}
-			//if we already have values for previousX and Y we can draw a line from 
-			//there to the current mouse location
+			//if we already have values for previousX and Y we can draw a line from there to the current mouse location
 			else{
 				if(keyIsPressed && key=='') {
 					//update the screen with the saved pixels to hide any previous line between mouse pressed and released

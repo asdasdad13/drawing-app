@@ -34,7 +34,7 @@ function StampTool(){
 			}
 			else {
 				if (this.fixedSpacing) { //apply fixed spacing
-					if (dist(mouseX,mouseY,prevMouseX,prevMouseY) >= this.spacing) { //ensure spacing between stamped images
+					if (dist(mouseX,mouseY,prevMouseX,prevMouseY) >= this.spacing+this.size/2) { //ensure spacing between stamped images
 						image(sparkles,mouseX-this.size/2,mouseY-this.size/2,this.size,this.size);
 						prevMouseX = mouseX;
 						prevMouseY = mouseY;
@@ -61,7 +61,6 @@ function StampTool(){
 		}
 		else { //for loop is decrasing
 			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord-this.size*2)/this.size); i--) {//number of sample spots
-				console.log(i)
 				image(sparkles,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
 			}
 		}

@@ -14,6 +14,8 @@ function preload() {
 }
 
 function setup() {
+	document.addEventListener('contextmenu',e=>e.preventDefault()); //disable 
+
 	//create a canvas to fill the content div from index.html
 	canvasContainer = select('#content');
 	var c = createCanvas(canvasContainer.size().width, canvasContainer.size().height); //canvas size resizes automaticcally based on user's screen res

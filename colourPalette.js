@@ -21,6 +21,7 @@ function ColourPalette() {
 		//set the selected colour and fill and stroke
 		self.selectedColour = c;
 		stroke(c);
+		fill(c);
 		this.style('text-align','center')
 		var letter = createP('S'); //left click = change selected stroke colour
 		letter.parent(this);
@@ -46,12 +47,18 @@ function ColourPalette() {
 			colourSwatch.class('colourSwatches');
 			colourSwatch.id(colourID);
 
+
 			select(".colourPalette").child(colourSwatch);
 			select("#" + colourID).style("background-color", this.colours[i]);
 			colourSwatch.mouseClicked(colourClick);
 		}
 
-		select(".colourSwatches").style("border", "2px solid blue");
+		var p = select(".colourSwatches").style('text-align','center')
+		var letter = createP('S'); //left click = change selected stroke colour
+		letter.parent(p);
+		letter.class('swatch-letter');
+		letter.style('font-size','2rem');
+		letter.style('text-shadow','-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'); //text outline
 	};
 	//call the loadColours function now it is declared
 	this.loadColours();
