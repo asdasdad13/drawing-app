@@ -5,7 +5,6 @@ function EllipseTool(){
 
 	var startMouseX = -1; //-1 is the null value
 	var startMouseY = -1;
-	var drawing = false;
 	var self = this;
 
 	this.draw = function(){
@@ -14,7 +13,6 @@ function EllipseTool(){
 			if(startMouseX == -1){ //startMouseX is changed from -1 to mouseX value for start of new line
 				startMouseX = mouseX;
 				startMouseY = mouseY;
-				drawing = true;
 				loadPixels(); //system funtcion that loads canvas image to [pixels] array
 			}
 
@@ -26,8 +24,7 @@ function EllipseTool(){
 
 		}
 
-		else if(drawing){ //if a line is in the process of being drawn, and mouse is no longer pressed
-			drawing = false; //reset all values to prevent next line from connecting
+		else { //if a line is in the process of being drawn, and mouse is no longer pressed
 			startMouseX = -1;
 			startMouseY = -1;
 		}

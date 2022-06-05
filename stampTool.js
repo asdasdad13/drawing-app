@@ -48,6 +48,8 @@ function StampTool(){
 		else {
 			startMouseX = -1;
 			startMouseY = -1;
+			prevMouseX = -1;
+			prevMouseY = -1;
 		}
 		this.checkSizeChanged(this);
 		this.checkSpacingChanged(this);
