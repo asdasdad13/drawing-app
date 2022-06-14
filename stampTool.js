@@ -48,7 +48,7 @@ function StampTool(){
 		else {
 			startMouseX = -1;
 			startMouseY = -1;
-			prevMouseX = -1;
+			prevMouseX = -1; //ensures that individual clicks can paint the image at a distance less than the fixed spacing specified.
 			prevMouseY = -1;
 		}
 		this.checkSizeChanged(this);
@@ -169,12 +169,14 @@ function StampTool(){
 				self.fixedSpacing = true;
 				toolSpacingSlider.removeAttribute('disabled');
 				toolSpacingInput.removeAttribute('disabled');
+				toolSpacingInput.attribute('color','#FFF');
 				b.style('color','#FFF');
 			}
 			else {
 				self.fixedSpacing = false;
 				toolSpacingSlider.attribute('disabled','disabled');
 				toolSpacingInput.attribute('disabled','disabled');
+				toolSpacingInput.attribute('color','grey');
 				b.style('color','grey')
 			}
 		})

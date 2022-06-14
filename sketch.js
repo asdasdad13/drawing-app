@@ -39,6 +39,7 @@ function setup() {
 	toolbox.addTool(new RectangleTool());
 	toolbox.addTool(new EllipseTool());
 	toolbox.addTool(new StampTool());
+	toolbox.addTool(new EditableShape());
 
 	background(255); //background must be present or undo/redo will not work
 	blankCanvas = get(); //for resetting canvas to clean white image when cleared
@@ -60,6 +61,12 @@ function checkWithinCanvas(x,y) { //check that user mouse is on canvas, if it is
 
 function mousePressed() {
 	if (checkWithinCanvas()) saveState(); //allows for undoing/redoing, condition excludes clicking on tool icons
+}
+
+function mouseReleased() {
+	if (toolbox.selectedTool.hasOwnProperty('mouseReleased')) {
+		toolbox.selectedTool.mouseReleased();
+	}
 }
 
 function keyPressed(e) {
