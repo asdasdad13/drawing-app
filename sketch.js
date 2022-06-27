@@ -39,10 +39,15 @@ function setup() {
 	toolbox.addTool(new RectangleTool());
 	toolbox.addTool(new EllipseTool());
 	toolbox.addTool(new StampTool());
-	toolbox.addTool(new EditableShape());
 
 	background(255); //background must be present or undo/redo will not work
 	blankCanvas = get(); //for resetting canvas to clean white image when cleared
+}
+
+function setup() {
+	selectMode = 0;
+	selectButton = createButton('Select area');
+	selectButton.mousePressed
 }
 
 function draw() {
@@ -63,18 +68,16 @@ function mousePressed() {
 	if (checkWithinCanvas()) saveState(); //allows for undoing/redoing, condition excludes clicking on tool icons
 }
 
-function mouseReleased() {
-	if (toolbox.selectedTool.hasOwnProperty('mouseReleased')) {
-		toolbox.selectedTool.mouseReleased();
-	}
-}
-
 function keyPressed(e) {
     if (e.ctrlKey && (e.key == 'z' || e.key == 'Z')) { //undo
 		undo();
 	}
 	if (e.ctrlKey && (e.key == 'y' || e.key == 'Y')) { //redo
 		redo();
+	}
+	if (e.ctrlKey && (e.key == 'v' || e.key == 'V') && toolbox.selectedTool.name == 'scissorsTool') { //cut selection
+		//scissors
+		console.log('sketch 74 fix')
 	}
 }
 
