@@ -52,7 +52,7 @@ function Toolbox() {
 				}
 				//select the tool and highlight it on the toolbar
 				if (toolName == 'mirrorDraw' && this.selectedTool.name == 'mirrorDraw') this.selectedTool.adjustOrientation(); // if mirrorDraw is active, this click changes the orientation of the symmetry line
-
+				
 				this.selectedTool = this.tools[i];
 				if (toolName == 'mirrorDraw') {
 					select('#lineOfSymmetry').style('display', 'block');

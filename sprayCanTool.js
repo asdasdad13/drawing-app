@@ -98,7 +98,7 @@ function SprayCanTool(){
 
 	this.populateOptions = function() {
 		//add spacing option
-		
+		console.log('remember to add spacing option for spray can')
 		//add html element for brush size slider
 		var d = createDiv();
 		d.id('tool-size');
