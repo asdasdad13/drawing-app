@@ -3,6 +3,7 @@ function SprayCanTool(){
     this.name = "sprayCanTool";
     this.icon = "assets/sprayCan.png";
     this.size = 50;
+	this.density = 30;
 	var self = this;
 	var previousMouseX = -1;
 	var previousMouseY = -1;
@@ -25,18 +26,18 @@ function SprayCanTool(){
 					//draw the line
 					for (j=0;j<this.size;j++) {
 						if (abs(mouseX - previousMouseX) > abs(mouseY - previousMouseY)) { //x axis changes more
-							var spacing = ceil((previousMouseX - mouseX)/this.size); 
-							this.renderAlternate(previousMouseX,mouseX,(previousMouseX - mouseX)/spacing,(previousMouseY - mouseY)/spacing);
+							var density = ceil((previousMouseX - mouseX)/this.size); 
+							this.renderAlternate(previousMouseX,mouseX,(previousMouseX - mouseX)/density,(previousMouseY - mouseY)/density);
 						}
 						else { //y axis changes more
-							var spacing = ceil((previousMouseY - mouseY)/this.size); 
-							this.renderAlternate(previousMouseY,mouseY,(previousMouseX - mouseX)/spacing,(previousMouseY - mouseY)/spacing);
+							var density = ceil((previousMouseY - mouseY)/this.size); 
+							this.renderAlternate(previousMouseY,mouseY,(previousMouseX - mouseX)/density,(previousMouseY - mouseY)/density);
 						}
 					}
 				}
 			}
 			else {
-				for(var i = 0; i < this.size/2; i++){
+				for(var i = 0; i < this.density*8; i++){ //shift key up, draw freehand
 					point(random(mouseX-this.size, mouseX + this.size), random(mouseY-this.size, mouseY+this.size));
 				}
 			}
@@ -49,17 +50,33 @@ function SprayCanTool(){
 			previousMouseY = -1;
 		}
 		this.checkSizeChanged();
+		this.checkDensityChanged();
+
 	};
 
 	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
-		if (prevMouseCoord < currMouseCoord) { //for loop is increasing
-			for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
-				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
+		if (!this.fixedDensity) {
+			if (prevMouseCoord < currMouseCoord) { //for loop is increasing
+				for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
+					console.log(i)
+					point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
+				}
 			}
-		}
-		else { //for loop is decrasing
-			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord-this.size*2)/this.size); i--) {//number of sample spots
-				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
+			else { //for loop is decrasing
+				for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord-this.size*2)/this.size); i--) {//number of sample spots
+					point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
+				}
+			}
+		} else { //use fixed density
+			if (prevMouseCoord < currMouseCoord) { //for loop is increasing
+				for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size)*this.density; i++) {//number of sample spots
+					point(random(previousMouseX+i/this.density*xDiff-this.size, previousMouseX+i/this.density*xDiff+this.size), random(previousMouseY+i/this.density*yDiff-this.size, previousMouseY+i/this.density*yDiff+this.size));
+				}
+			}
+			else { //for loop is decrasing
+				for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord-this.size*2)/this.size*this.density); i--) {//number of sample spots
+					point(random(previousMouseX+i/this.density*xDiff-this.size, previousMouseX+i/this.density*xDiff+this.size), random(previousMouseY+i/this.density*yDiff-this.size, previousMouseY+i/this.density*yDiff+this.size));
+				}
 			}
 		}
 	}
@@ -91,14 +108,57 @@ function SprayCanTool(){
 		})
 	}
 
-	
+	this.checkDensityChanged = function() {
+        if (keyIsPressed){
+			if (key=='[' && this.density>1) { //decrease brush size with '['
+				this.density--;
+				toolDensitySlider.value(this.density); //update slider and input field values
+				toolDensityInput.value(this.density);
+			}
+			if (key==']' && this.density<10) { //increase brush size with ']'
+				this.density++;
+				toolDensitySlider.value(this.density); //update slider and input field values
+				toolDensityInput.value(this.density);
+			}
+		}
+
+		if (toolDensityInput.value()>50) toolDensityInput.value(50); //min and max limits for toolSizeInput
+		if (toolDensityInput.value()<1) toolDensityInput.value(1);
+
+		toolDensitySlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
+			toolDensityInput.value(toolDensitySlider.value());
+			self.density = toolDensitySlider.value();
+		})
+		toolDensityInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
+			toolDensitySlider.value(Number(toolDensityInput.value()));
+			self.density = Number(toolDensityInput.value());
+		})
+	}
+
 	this.unselectTool = function() {
 		select("#tool-size").remove();
+		select("#tool-density").remove();
 	}
 
 	this.populateOptions = function() {
-		//add spacing option
-		console.log('remember to add spacing option for spray can')
+		//add Density div. Includes a checkbox asking for Fixed density? and a density slider.
+		var a = createDiv();
+		a.id('tool-density');
+		a.parent('#tool-options');
+
+		//add a density option
+		var b = createDiv();
+		b.html('Density: ')
+		b.parent('#tool-density');
+
+		toolDensitySlider = createSlider(1,50,this.density);
+		toolDensitySlider.parent(b);
+
+		toolDensityInput = createInput(this.density);
+		toolDensityInput.parent(b);
+		toolDensityInput.attribute('type', 'number')
+		toolDensityInput.style('width','3rem');
+
 		//add html element for brush size slider
 		var d = createDiv();
 		d.id('tool-size');

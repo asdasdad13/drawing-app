@@ -51,8 +51,8 @@ function StampTool(){
 			prevMouseX = -1; //ensures that individual clicks can paint the image at a distance less than the fixed spacing specified.
 			prevMouseY = -1;
 		}
-		this.checkSizeChanged(this);
-		this.checkSpacingChanged(this);
+		this.checkSizeChanged();
+		this.checkSpacingChanged();
 	};
 
 	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
@@ -110,7 +110,7 @@ function StampTool(){
 		}
 
 		if (toolSpacingInput.value()>100) toolSpacingInput.value(100); //min and max limits for toolSizeInput
-		if (toolSpacingInput.value()<1) toolSpacingInput.value(1);
+		if (toolSpacingInput.value()<0) toolSpacingInput.value(0);
 
 		toolSpacingSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
 			toolSpacingInput.value(toolSpacingSlider.value());
@@ -142,10 +142,10 @@ function StampTool(){
 		b.html('Spacing: ')
 		b.parent('#tool-spacing');
 
-		toolSpacingSlider = createSlider(this.size,100,this.size);
+		toolSpacingSlider = createSlider(0,100,this.spacing);
 		toolSpacingSlider.parent(b);
 
-		toolSpacingInput = createInput(this.size);
+		toolSpacingInput = createInput(this.spacing);
 		toolSpacingInput.parent(b);
 		toolSpacingInput.attribute('type', 'number')
 		toolSpacingInput.style('width','3rem');

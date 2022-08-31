@@ -118,10 +118,6 @@ function keyPressed(e) {
 	if (e.ctrlKey && (e.key == 'y' || e.key == 'Y')) { //redo
 		redo();
 	}
-	if (e.ctrlKey && (e.key == 'v' || e.key == 'V') && toolbox.selectedTool.name == 'scissorsTool') { //cut selection
-		//scissors
-		console.log('sketch 74 fix')
-	}
 }
 
 function undo() {
