@@ -20,7 +20,14 @@ function RectangleTool(){
 
 			else{ //for rendering the line, mouse released or not
 				updatePixels(); //system function that updates canvas image with contents of [pixels] array
-				if (keyIsPressed && key=='') rect(startMouseX, startMouseY, mouseX-startMouseX, mouseX-startMouseX); //shift key down; draw straight line
+				if (keyIsPressed && key=='') {
+					if ((startMouseX>mouseX && startMouseY>mouseY) || (startMouseX<mouseX && startMouseY<mouseY)) {
+						rect(startMouseX, startMouseY, mouseX-startMouseX, mouseX-startMouseX); //shift key down; draw straight line
+					} else {
+						console.log(startMouseY, mouseX-startMouseX)
+						rect(startMouseX, startMouseY, mouseX-startMouseX, startMouseX-mouseX); //shift key down; draw straight line
+					}
+				} 
 				else rect(startMouseX, startMouseY, mouseX-startMouseX, mouseY-startMouseY); //a line is rendered from starting point to current mouse position, mouse released or not
 			}
 
