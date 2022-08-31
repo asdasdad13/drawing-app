@@ -22,10 +22,11 @@ function RectangleTool(){
 				updatePixels(); //system function that updates canvas image with contents of [pixels] array
 				if (keyIsPressed && key=='') {
 					a = dist(startMouseX, startMouseY, mouseX, mouseY)/Math.sqrt(2);
-					if (startMouseX<mouseX) var xOffset = a;
-					else var xOffset = -a;
-					if (startMouseY<mouseY) var yOffset = a;
-					else var yOffset = -a;
+					if (startMouseX<mouseX) var xOffset = a; //square will be produced leftwards of start point
+					else var xOffset = -a; //right
+					if (startMouseY<mouseY) var yOffset = a; //square will be produced above start point
+					else var yOffset = -a; //below
+					
 					rect(startMouseX, startMouseY, xOffset, yOffset);
 				} //draw a rectangle instead of square
 				else rect(startMouseX, startMouseY, mouseX-startMouseX, mouseY-startMouseY); //a line is rendered from starting point to current mouse position, mouse released or not
