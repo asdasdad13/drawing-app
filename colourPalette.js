@@ -21,7 +21,7 @@ function ColourPalette() {
 		//set the selected colour and fill and stroke
 		self.selectedColour = c;
 		stroke(c);
-		fill(c);
+		// fill(c);
 		this.style('text-align','center')
 		var letter = createP('S'); //left click = change selected stroke colour
 		letter.parent(this);
