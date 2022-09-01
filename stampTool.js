@@ -128,7 +128,6 @@ function StampTool(){
 	}
 
 	this.populateOptions = function() {
-		console.log(self.fixedSpacing)
 		//add Spacing div. Includes a checkbox asking for Fixed spacing? and a spacing slider.
 		var a = createDiv();
 		a.id('tool-spacing');

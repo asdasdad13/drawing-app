@@ -1,8 +1,7 @@
-
 function ScissorsTool(){
     this.name = "scissorsTool";
     this.icon = "assets/scissors.png";
-    var selectArea = {x: -1, y: -1, w: 100, h: 100};
+    var selectArea = {x: -1, y: -1, w: 0, h: 0};
     var selectedPixels;
     this.selectMode = 0;
 	var self = this;
@@ -11,7 +10,6 @@ function ScissorsTool(){
 	this.draw = function(){
         noStroke();
         fill(0,70,100);
-
         if(mouseIsPressed && checkWithinCanvas()){
             if (this.selectMode == 1) this.pasteImage();
             else { //selecting mode
@@ -24,6 +22,7 @@ function ScissorsTool(){
                     loadPixels();
                 }
                 else { //for rendering the line, mouse released or not
+                    updatePixels();
                     if (keyIsPressed && key=='') rect(selectArea.x, selectArea.y, selectArea.w, selectArea.w);
                     else rect(selectArea.x, selectArea.y, selectArea.w, selectArea.h);
                 }
@@ -32,6 +31,7 @@ function ScissorsTool(){
 		
 		else if(drawing){
 			//reset the drawing bool and start locations
+            updatePixels();
             drawing = false;
             selectArea.x = -1;
             selectArea.y = -1;
@@ -39,7 +39,6 @@ function ScissorsTool(){
     }
 
     this.pasteImage = function() { //paste can be done by clicking button or Ctrl+X, which is controlled at sketch.js
-        console.log(selectedPixels)
         image(selectedPixels,(mouseX + selectedPixels.width)/2,(mouseY + selectedPixels.height)/2); //pasting mode, just paste and avoid selection mode
         loadPixels();
     }

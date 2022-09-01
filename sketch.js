@@ -43,41 +43,43 @@ function setup() {
 	toolbox.addTool(new RectangleTool());
 	toolbox.addTool(new EllipseTool());
 	toolbox.addTool(new StampTool());
+	toolbox.addTool(new ScissorsTool());
 
 	background(255); //background must be present or undo/redo will not work
 	blankCanvas = get(); //for resetting canvas to clean white image when cleared
 
-	selectMode = 0;
-	selectedArea = {x: -1, y: -1, w: 100, y: 100};
-	selectButton = select('#cutButton');
-	selectButton.mousePressed(function() {
-		if (selectMode == 0) {
-			selectMode += 1;
-			selectButton.html('Cut');
-			loadPixels();
-		} else if (selectMode == 1) {
-			selectMode += 1;
-			selectButton.html('End paste');
-			updatePixels();
+	// selectMode = 0;
+	// selectedArea = {x: -1, y: -1, w: 100, y: 100};
+	// selectButton = select('#cutButton');
+	// selectButton.mousePressed(function() {
+	// 	if (selectMode == 0) {
+	// 		selectMode += 1;
+	// 		selectButton.html('Cut');
+	// 		loadPixels();
+	// 	} else if (selectMode == 1) {
+	// 		selectMode += 1;
+	// 		selectButton.html('End paste');
+	// 		updatePixels();
 
-            selectedPixels = get(selectedArea.x,selectedArea.y,selectedArea.w,selectedArea.h);
-			noStroke();
-			//draw a rectangle over it
-			fill(255);
-			rect(selectedArea.x, selectedArea.y, selectedArea.w, selectedArea.h);
-		} else if (selectMode == 2) {
-			selectMode = 0;
-			loadPixels();
-			selectedArea = {x: -1, y: -1, w: 100, h: 100};
-			selectButton.html('Select area to cut');
-		}
-	})
+    //         selectedPixels = get(selectedArea.x,selectedArea.y,selectedArea.w,selectedArea.h);
+	// 		noStroke();
+	// 		//draw a rectangle over it
+	// 		fill(255);
+	// 		rect(selectedArea.x, selectedArea.y, selectedArea.w, selectedArea.h);
+	// 	} else if (selectMode == 2) {
+	// 		selectMode = 0;
+	// 		loadPixels();
+	// 		selectedArea = {x: -1, y: -1, w: 100, h: 100};
+	// 		selectButton.html('Select area to cut');
+	// 	}
+	// })
 }
 
 function draw() {
 	//call the draw function from the selected tool.
 	//if there isn't a draw method the app will alert the user
 	if (toolbox.selectedTool.hasOwnProperty("draw")) {
+		noFill();
 		toolbox.selectedTool.draw();
 	} else {
 		alert("it doesn't look like your tool has a draw method!");
