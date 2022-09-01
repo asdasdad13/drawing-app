@@ -128,13 +128,14 @@ function StampTool(){
 	}
 
 	this.populateOptions = function() {
+		console.log(self.fixedSpacing)
 		//add Spacing div. Includes a checkbox asking for Fixed spacing? and a spacing slider.
 		var a = createDiv();
 		a.id('tool-spacing');
 		a.parent('#tool-options');
 
 		//add checkbox for Fixed spacing?
-		var fixedSpacingCheck = createCheckbox('Fixed spacing?',true);
+		var fixedSpacingCheck = createCheckbox('Fixed spacing?',this.fixedSpacing);
 		fixedSpacingCheck.parent('#tool-spacing');
 
 		//add a spacing option
@@ -164,6 +165,14 @@ function StampTool(){
 		toolSizeInput.parent('tool-size');
 		toolSizeInput.style('width','3rem');
 		
+		//style 'Spacing' label to be grayed out if 'Fixed spacing'? is not checked
+		if (!this.fixedSpacing) {
+			toolSpacingSlider.attribute('disabled','disabled');
+			toolSpacingInput.attribute('disabled','disabled');
+			toolSpacingInput.attribute('color','grey');
+			b.style('color','grey')
+		}
+
 		fixedSpacingCheck.changed(function() { //disable Fixed spacing settings if it has been turned off
 			if (this.checked()) {
 				self.fixedSpacing = true;

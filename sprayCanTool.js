@@ -24,7 +24,7 @@ function SprayCanTool(){
 				else {
 					updatePixels();
 					//draw the line
-					for (j=0;j<this.density*8;j++) { //controls amount of particles
+					for (var i=0;i<this.density*8;i++) { //controls amount of particles
 						if (abs(mouseX - previousMouseX) > abs(mouseY - previousMouseY)) { //x axis changes more
 							var spacing = ceil((previousMouseX - mouseX)/this.size); 
 							this.renderAlternate(previousMouseX,mouseX,(previousMouseX - mouseX)/spacing,(previousMouseY - mouseY)/spacing);	
@@ -56,7 +56,6 @@ function SprayCanTool(){
 
 	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
 		if (prevMouseCoord < currMouseCoord) { //for loop is increasing
-			console.log(ceil((currMouseCoord-prevMouseCoord)/this.size))
 			for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
 				point(random(previousMouseX+i*xDiff-this.size, previousMouseX+i*xDiff+this.size), random(previousMouseY+i*yDiff-this.size, previousMouseY+i*yDiff+this.size));
 			}
