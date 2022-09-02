@@ -31,7 +31,6 @@ function RectangleTool(){
 				} //draw a rectangle instead of square
 				else rect(startMouseX, startMouseY, mouseX-startMouseX, mouseY-startMouseY); //a line is rendered from starting point to current mouse position, mouse released or not
 			}
-
 		}
 
 		else if(drawing){ //if a line is in the process of being drawn, and mouse is no longer pressed
