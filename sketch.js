@@ -10,10 +10,11 @@ var stampImagesAr = Array(10);
 var sparkles;
 
 function preload() {
-	sparkles = loadImage('./assets/sparkles.png');
+	sparkles = loadImage('./assets/sparkles.png', succ => {console.log('Sparkles asset loaded'), fail => {console.log('Sparkles asset failed to load')}});
 }
 
 function setup() {
+	console.log('remember to work on stampImagesAr(10) in sketch.js')
 	document.addEventListener('contextmenu',e=>e.preventDefault()); //disable right-click
 
 	//create a canvas to fill the content div from index.html
@@ -32,14 +33,14 @@ function setup() {
 	toolbox = new Toolbox();
 
 	//add the tools to the toolbox.
-	toolbox.addTool(new FreehandTool());
-	toolbox.addTool(new LineToTool());
-	toolbox.addTool(new SprayCanTool());
-	toolbox.addTool(new MirrorDrawTool());
-	toolbox.addTool(new RectangleTool());
-	toolbox.addTool(new EllipseTool());
-	toolbox.addTool(new StampTool());
-	toolbox.addTool(new ScissorsTool());
+	toolbox.addTool(new FreehandTool(), 'Draw freehand shapes. Hold shift while drawing to draw a straight line.');
+	toolbox.addTool(new LineToTool(), 'Draw straight lines. Hold shift while drawing to snap your line to a 90° angle.');
+	toolbox.addTool(new SprayCanTool(), 'Use a spray can to draw. Hold shift to spray in a straight line.');
+	toolbox.addTool(new MirrorDrawTool(), 'Draw with symmetry. Click on the tool icon again to change orientation of symmetry. Hold shift while drawing to draw a straight line.');
+	toolbox.addTool(new RectangleTool(), 'Draw rectangles. Hold shift while drawing to draw squares.');
+	toolbox.addTool(new EllipseTool(), 'Draw ellipses. Hold shift while drawing to draw circles.');
+	toolbox.addTool(new StampTool(), 'Stamp images onto the canvas. Hold shift while drawing to stamp in a straight line.');
+	toolbox.addTool(new ScissorsTool(), 'Click and drag mouse on an area of the canvas to select an area to be cut, then click on "Cut Selection" to finalise the selection. Click "Paste Selection" to start pasting your selection by clicking on the canvas. Click "End paste" to enter selection mode again.');
 
 	background(255); //background must be present or undo/redo will not work
 	blankCanvas = get(); //for resetting canvas to clean white image when cleared
@@ -52,8 +53,6 @@ function draw() {
 		noFill();
 		stroke(colourP.selectedColour)
 		toolbox.selectedTool.draw();
-	} else {
-		alert("it doesn't look like your tool has a draw method!");
 	}
 }
 

@@ -19,8 +19,18 @@ function ScissorsTool(){
                     selectArea.x = -1;
                     selectArea.y = -1;
                 }
-                selectArea.w = mouseX - selectArea.x;
-                selectArea.h = mouseY - selectArea.y;
+                if (keyIsPressed && key=='') { //for rendering a square selection box and using that value for selection coordinates
+                    a = dist(selectArea.x, selectArea.y, mouseX, mouseY)/Math.sqrt(2); //formula for length of side of square
+                    if (selectArea.x<mouseX) var xOffset = a; //square will be produced leftwards of start point
+                    else var xOffset = -a; //right
+                    if (selectArea.y<mouseY) var yOffset = a; //square will be produced above start point
+                    else var yOffset = -a; //below
+
+                    selectArea.w = selectArea.h = a;
+                } else {
+                    selectArea.w = mouseX - selectArea.x;
+                    selectArea.h = mouseY - selectArea.y;
+                }
                 if (selectArea.x == -1) {
                     selectArea.x = mouseX;
                     selectArea.y = mouseY;
@@ -28,7 +38,8 @@ function ScissorsTool(){
                     loadPixels();
                 } else if (drawing) {
                     updatePixels();
-                    if (keyIsPressed && key=='') rect(selectArea.x, selectArea.y, selectArea.w, selectArea.w); //with shift key down, render a square
+                    if (keyIsPressed && key=='') {rect(selectArea.x, selectArea.y, xOffset, yOffset); //with shift key down, render a square
+                    }
                     else rect(selectArea.x, selectArea.y, selectArea.w, selectArea.h); //render a free rectangle
                 }
             }

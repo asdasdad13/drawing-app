@@ -20,22 +20,23 @@ function Toolbox() {
 	}
 
 	//add a new tool icon to the html page i.e. writes the HTML code
-	var addToolIcon = function(icon, name) {
+	var addToolIcon = function(icon, name,description) {
 		var sideBarItem = createDiv("<img src='" + icon + "'>");
 		sideBarItem.class('sideBarItem');
 		sideBarItem.id(name + "sideBarItem");
 		sideBarItem.parent('sidebar');
 		sideBarItem.mouseClicked(toolbarItemClick);
+		sideBarItem.attribute('title',description);
 	};
 
 	//add a tool to the tools array
-	this.addTool = function(tool) {
+	this.addTool = function(tool, description) {
 		//check that the object tool has an icon and a name
 		if (!tool.hasOwnProperty("icon") || !tool.hasOwnProperty("name")) {
 			alert("make sure your tool has both a name and an icon");
 		}
 		this.tools.push(tool);
-		addToolIcon(tool.icon, tool.name);
+		addToolIcon(tool.icon, tool.name, description);
 		//if no tool is selected (ie. none have been added so far) make this tool the selected one.
 		if (this.selectedTool == null) {
 			this.selectTool(tool.name);
