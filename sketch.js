@@ -8,10 +8,6 @@ var stateHistory = [];
 var stateFuture = [];
 var stampImagesAr = Array(10);
 var sparkles;
-var selectMode;
-var selectedArea;
-var selectButton;
-var selectedPixels;
 
 function preload() {
 	sparkles = loadImage('./assets/sparkles.png');
@@ -67,19 +63,6 @@ function checkWithinCanvas() { //check that user mouse is on canvas, if it isn't
 
 function mousePressed() {
 	if (checkWithinCanvas()) saveState(); //allows for undoing/redoing, condition excludes clicking on tool icons
-	if (selectMode == 1) {
-		selectedArea.x = mouseX;
-		selectedArea.y = mouseY;
-	} else if (selectMode == 2 && checkWithinCanvas()) {
-		image(selectedPixels,mouseX - selectedPixels.width/2,mouseY - selectedPixels.height/2);
-	}
-}
-
-function mouseDragged() {
-	if (selectMode == 1) {
-		selectedArea.w = mouseX - selectedArea.x;
-		selectedArea.h = mouseY - selectedArea.y;
-	}
 }
 
 function keyPressed(e) {
