@@ -6,16 +6,16 @@ var helpers = null;
 var blankCanvas;
 var stateHistory = [];
 var stateFuture = [];
-var stampImagesAr = Array(10);
-var sparkles;
+var stampShapes = [];
 
 function preload() {
-	sparkles = loadImage('./assets/sparkles.png', succ => {console.log('Sparkles asset loaded'), fail => {console.log('Sparkles asset failed to load')}});
+	stampShapes.push(new presetShapes('sparkles'));
+	stampShapes.push(new presetShapes('cross'));
+	stampShapes.push(new presetShapes('fish'));
 }
 
 function setup() {
-	console.log('remember to work on stampImagesAr(10) in sketch.js')
-	document.addEventListener('contextmenu',e=>e.preventDefault()); //disable right-click
+	// document.addEventListener('contextmenu',e=>e.preventDefault()); //disable right-click
 
 	//create a canvas to fill the content div from index.html
 	canvasContainer = select('#content');
@@ -90,4 +90,12 @@ function redo() {
 function saveState() {
 	stateHistory.push(get());
 	stateFuture = [];
+}
+
+//preset shapes in stamp tool
+class presetShapes {
+	constructor(shapeName) {
+		this.name = shapeName;
+		this.shapeImg = loadImage('./assets/stampAssets/' + shapeName + '.png');
+	}
 }

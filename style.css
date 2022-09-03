@@ -53,23 +53,22 @@ html, body {
 	margin: 5px;
 }
 
+.wrapper {
+	display: grid;
+	height: 100%;
+	grid-template-columns: 70px 230px  minmax(500px, 1fr);
+	grid-template-rows: 35px minmax(500px, 1fr) 160px;
+	grid-template-areas:
+			"header header header"
+			"sidebar content content"
+			"colourP colourP options";
+	background-color: #fff;
+	color: #444;
+}
 
-	.wrapper {
-		display: grid;
-		height: 100%;
-		grid-template-columns: 70px 230px  minmax(500px, 1fr);
-		grid-template-rows: 35px minmax(500px, 1fr) 160px;
-		grid-template-areas:
-               "header header header"
-				"sidebar content content"
-                "colourP colourP options";
-		background-color: #fff;
-		color: #444;
-	}
 .box {
   background-color: #444;
   color: #fff;
-  font-size: 150%;
 }
 
 .header {
@@ -98,4 +97,16 @@ canvas {
 
 input[type='checkbox'] {
 	margin-right: 0.5rem;
+}
+
+#presetDiv{
+	grid-area: presetDiv;
+	display: flex;
+	flex-direction:grid;
+	height: 50px;
+	background: #FFF;
+}
+
+.presetShapes {
+	border: 1px solid #000;
 }

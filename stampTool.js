@@ -4,6 +4,7 @@ function StampTool(){
 	this.size = 30;
 	this.spacing = 30;
 	this.fixedSpacing = true;
+	this.shape = loadImage('assets/sparkles.png');
 
 	var startMouseX = -1; //-1 is the null value
 	var startMouseY = -1;
@@ -24,6 +25,9 @@ function StampTool(){
 					//draw the line
 					if (abs(mouseX - startMouseX) > abs(mouseY - startMouseY)) { //x axis changes more
 						var spacing = ceil((startMouseX - mouseX)/this.size); 
+						if (this.fixedSpacing) {
+							var spacing = this.spacing;
+						}
 						this.renderAlternate(startMouseX,mouseX,(startMouseX - mouseX)/spacing,(startMouseY - mouseY)/spacing);
 					}
 					else { //y axis changes more
@@ -35,13 +39,13 @@ function StampTool(){
 			else {
 				if (this.fixedSpacing) { //apply fixed spacing
 					if (dist(mouseX,mouseY,prevMouseX,prevMouseY) >= this.spacing+this.size/2) { //ensure spacing between stamped images
-						image(sparkles,mouseX-this.size/2,mouseY-this.size/2,this.size,this.size);
+						image(this.shape,mouseX-this.size/2,mouseY-this.size/2,this.size,this.size);
 						prevMouseX = mouseX;
 						prevMouseY = mouseY;
 					}
 				}
 				else { //no fixed spacing
-					image(sparkles,mouseX-this.size/2,mouseY-this.size/2,this.size,this.size);
+					image(this.shape,mouseX-this.size/2,mouseY-this.size/2,this.size,this.size);
 				}
 			}
 		}
@@ -58,12 +62,12 @@ function StampTool(){
 	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
 		if (prevMouseCoord < currMouseCoord) { //for loop is increasing
 			for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
-				image(sparkles,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
+				image(this.shape,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
 			}
 		}
 		else { //for loop is decrasing
 			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord-this.size*2)/this.size); i--) {//number of sample spots
-				image(sparkles,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
+				image(this.shape,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
 			}
 		}
 	}
@@ -123,15 +127,29 @@ function StampTool(){
 	}
 	
 	this.unselectTool = function() {
-		select("#tool-size").remove();
-		select("#tool-spacing").remove();
+		select("#mainDiv").remove();
 	}
 
 	this.populateOptions = function() {
+		var mainDiv = createDiv();
+		mainDiv.style('display','flex');
+		mainDiv.style('justify-content','space-between');
+		mainDiv.parent('#tool-options');
+		mainDiv.id('mainDiv');
+		mainDiv.style('padding-right','50%');
+
+		var Ldiv = createDiv();
+		Ldiv.id('#Ldiv');
+		Ldiv.parent(mainDiv);
+
+		var Rdiv = createDiv();
+		Rdiv.id('#Rdiv');
+		Rdiv.parent(mainDiv);
+
 		//add Spacing div. Includes a checkbox asking for Fixed spacing? and a spacing slider.
 		var a = createDiv();
 		a.id('tool-spacing');
-		a.parent('#tool-options');
+		a.parent(Ldiv);
 
 		//add checkbox for Fixed spacing?
 		var fixedSpacingCheck = createCheckbox('Fixed spacing?',this.fixedSpacing);
@@ -151,13 +169,13 @@ function StampTool(){
 		toolSpacingInput.style('width','3rem');
 
 		//add html element for brush size slider
-		var d = createDiv();
-		d.id('tool-size');
-		d.html('Tool radius: ')
-		d.parent('#tool-options');
+		var c = createDiv();
+		c.id('tool-size');
+		c.html('Tool radius: ')
+		c.parent(Ldiv);
 
 		toolSizeSlider = createSlider(1,100,this.size);
-		toolSizeSlider.parent(d);
+		toolSizeSlider.parent(c);
 
 		toolSizeInput = createInput(this.size);
 		toolSizeInput.attribute('type', 'number')
@@ -188,5 +206,28 @@ function StampTool(){
 				b.style('color','grey')
 			}
 		})
+
+		var d = createDiv();
+		d.id('stampPresets');
+		d.html('Select a shape:')
+		d.parent(Rdiv);
+
+		var f = createDiv();
+		f.parent(d);
+		f.id('presetDiv')
+
+		for (let i=0; i<stampShapes.length; i++) {
+			let ShapeIcon = createImg('./assets/stampAssets/' + stampShapes[i].name + '.png');
+			ShapeIcon.parent(f);
+			ShapeIcon.class('presetShapes');
+			ShapeIcon.mouseClicked(function() {
+				self.shape = stampShapes[i].shapeImg;
+				var items = selectAll('.presetShapes')
+				for (j in items) {
+					items[j].style('border', '1px solid black');
+				}
+				ShapeIcon.style('border','1px solid red');
+			});
+		}
 	};
 }
