@@ -4,7 +4,7 @@ function StampTool(){
 	this.size = 30;
 	this.spacing = 30;
 	this.fixedSpacing = true;
-	this.shape = loadImage('assets/sparkles.png');
+	this.shape = loadImage('./assets/stampAssets/sparkles.png');
 
 	var startMouseX = -1; //-1 is the null value
 	var startMouseY = -1;
@@ -14,7 +14,7 @@ function StampTool(){
 
 	this.draw = function(){
 		if(mouseIsPressed && checkWithinCanvas()){ //if mouse is pressed
-			if(keyIsPressed && key=='') {
+			if(keyIsPressed && key=='') { //straight line
 				if(startMouseX == -1){
 					startMouseX = mouseX;
 					startMouseY = mouseY;
@@ -23,20 +23,31 @@ function StampTool(){
 				else {
 					updatePixels();
 					//draw the line
-					if (abs(mouseX - startMouseX) > abs(mouseY - startMouseY)) { //x axis changes more
-						var spacing = ceil((startMouseX - mouseX)/this.size); 
+					let xDist = mouseX - startMouseX;
+					let yDist = mouseY - startMouseY;
+					if (abs(xDist) > abs(yDist)) { //x axis changes more
 						if (this.fixedSpacing) {
-							var spacing = this.spacing;
+							let spacing = abs(xDist/this.spacing);
+							this.renderAlternateFixed(startMouseX,mouseX,xDist/spacing,yDist/spacing);
 						}
-						this.renderAlternate(startMouseX,mouseX,(startMouseX - mouseX)/spacing,(startMouseY - mouseY)/spacing);
+						else {
+							let spacing = xDist/this.size;
+							this.renderAlternate(startMouseX,mouseX,xDist/spacing,yDist/spacing,spacing);
+						}
 					}
 					else { //y axis changes more
-						var spacing = ceil((startMouseY - mouseY)/this.size); 
-						this.renderAlternate(startMouseY,mouseY,(startMouseX - mouseX)/spacing,(startMouseY - mouseY)/spacing);
+						if (this.fixedSpacing) {
+							let spacing = abs(yDist/this.spacing);
+							this.renderAlternateFixed(startMouseY,mouseY,xDist/spacing,yDist/spacing);
+						}
+						else {
+							let spacing = yDist/this.size;
+							this.renderAlternate(startMouseY,mouseY,xDist/spacing,yDist/spacing,spacing);
+						}
 					}
 				}
 			}
-			else {
+			else { //draw normally
 				if (this.fixedSpacing) { //apply fixed spacing
 					if (dist(mouseX,mouseY,prevMouseX,prevMouseY) >= this.spacing+this.size/2) { //ensure spacing between stamped images
 						image(this.shape,mouseX-this.size/2,mouseY-this.size/2,this.size,this.size);
@@ -59,7 +70,10 @@ function StampTool(){
 		this.checkSpacingChanged();
 	};
 
-	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
+	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff,spacing) {
+			// for (var i = 0; i < spacing; i++) {//number of sample spots
+			// 	point(startMouseX+i*xDiff,startMouseY+i*yDiff)
+			// }
 		if (prevMouseCoord < currMouseCoord) { //for loop is increasing
 			for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
 				image(this.shape,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
@@ -69,6 +83,13 @@ function StampTool(){
 			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord-this.size*2)/this.size); i--) {//number of sample spots
 				image(this.shape,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
 			}
+		}
+	}
+
+	this.renderAlternateFixed = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
+		for (var i = 0; i < abs(currMouseCoord-prevMouseCoord)/this.spacing; i++) {//number of sample spots
+			console.log(xDiff)
+			image(this.shape,startMouseX+i*xDiff, startMouseY+i*yDiff,this.size,this.size);
 		}
 	}
 
@@ -100,30 +121,32 @@ function StampTool(){
 	}
 
 	this.checkSpacingChanged = function() {
-        if (keyIsPressed){
-			if (key=='[' && this.spacing>1) { //decrease brush size with '['
-				this.spacing--;
-				toolSpacingSlider.value(this.spacing); //update slider and input field values
-				toolSpacingInput.value(this.spacing);
+		if (this.fixedSpacing) {
+			if (keyIsPressed){
+				if (key=='[' && this.spacing>1) { //decrease brush size with '['
+					this.spacing--;
+					toolSpacingSlider.value(this.spacing); //update slider and input field values
+					toolSpacingInput.value(this.spacing);
+				}
+				if (key==']' && this.size<100) { //increase brush size with ']'
+					this.spacing++;
+					toolSpacingSlider.value(this.spacing); //update slider and input field values
+					toolSpacingInput.value(this.spacing);
+				}
 			}
-			if (key==']' && this.size<100) { //increase brush size with ']'
-				this.spacing++;
-				toolSpacingSlider.value(this.spacing); //update slider and input field values
-				toolSpacingInput.value(this.spacing);
-			}
+	
+			if (toolSpacingInput.value()>100) toolSpacingInput.value(100); //min and max limits for toolSizeInput
+			if (toolSpacingInput.value()<0) toolSpacingInput.value(0);
+	
+			toolSpacingSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
+				toolSpacingInput.value(toolSpacingSlider.value());
+				self.spacing = toolSpacingSlider.value();
+			})
+			toolSpacingInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
+				toolSpacingSlider.value(Number(toolSpacingInput.value()));
+				self.spacing = Number(toolSpacingInput.value());
+			})
 		}
-
-		if (toolSpacingInput.value()>100) toolSpacingInput.value(100); //min and max limits for toolSizeInput
-		if (toolSpacingInput.value()<0) toolSpacingInput.value(0);
-
-		toolSpacingSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
-			toolSpacingInput.value(toolSpacingSlider.value());
-			self.spacing = toolSpacingSlider.value();
-		})
-		toolSpacingInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
-			toolSpacingSlider.value(Number(toolSpacingInput.value()));
-			self.spacing = Number(toolSpacingInput.value());
-		})
 	}
 	
 	this.unselectTool = function() {
@@ -132,11 +155,11 @@ function StampTool(){
 
 	this.populateOptions = function() {
 		var mainDiv = createDiv();
+		mainDiv.style('width','70%');
 		mainDiv.style('display','flex');
 		mainDiv.style('justify-content','space-between');
 		mainDiv.parent('#tool-options');
 		mainDiv.id('mainDiv');
-		mainDiv.style('padding-right','50%');
 
 		var Ldiv = createDiv();
 		Ldiv.id('#Ldiv');

@@ -12,6 +12,13 @@ function preload() {
 	stampShapes.push(new presetShapes('sparkles'));
 	stampShapes.push(new presetShapes('cross'));
 	stampShapes.push(new presetShapes('fish'));
+	stampShapes.push(new presetShapes('star'));
+	stampShapes.push(new presetShapes('barcode'));
+	stampShapes.push(new presetShapes('minus'));
+	stampShapes.push(new presetShapes('bolt'));
+	stampShapes.push(new presetShapes('circle'));
+	stampShapes.push(new presetShapes('heart'));
+	stampShapes.push(new presetShapes('melon'));
 }
 
 function setup() {
