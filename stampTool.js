@@ -27,22 +27,22 @@ function StampTool(){
 					let yDist = mouseY - startMouseY;
 					if (abs(xDist) > abs(yDist)) { //x axis changes more
 						if (this.fixedSpacing) {
-							let spacing = abs(xDist/this.spacing);
-							this.renderAlternateFixed(startMouseX,mouseX,xDist/spacing,yDist/spacing);
+							let gaps = abs(xDist/(this.spacing+this.size/2));
+							this.renderAlternateFixed(startMouseX,mouseX,xDist/gaps,yDist/gaps,gaps);
 						}
 						else {
-							let spacing = xDist/this.size;
-							this.renderAlternate(startMouseX,mouseX,xDist/spacing,yDist/spacing,spacing);
+							let gaps = abs(xDist/this.size);
+							this.renderAlternate(startMouseX,mouseX,xDist/gaps,yDist/gaps,gaps);
 						}
 					}
 					else { //y axis changes more
 						if (this.fixedSpacing) {
-							let spacing = abs(yDist/this.spacing);
-							this.renderAlternateFixed(startMouseY,mouseY,xDist/spacing,yDist/spacing);
+							let gaps = abs(yDist/(this.spacing+this.size/2));
+							this.renderAlternateFixed(startMouseY,mouseY,xDist/gaps,yDist/gaps,gaps);
 						}
 						else {
-							let spacing = yDist/this.size;
-							this.renderAlternate(startMouseY,mouseY,xDist/spacing,yDist/spacing,spacing);
+							let gaps =abs( yDist/this.size);
+							this.renderAlternate(startMouseY,mouseY,xDist/gaps,yDist/gaps,gaps);
 						}
 					}
 				}
@@ -70,25 +70,14 @@ function StampTool(){
 		this.checkSpacingChanged();
 	};
 
-	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff,spacing) {
-			// for (var i = 0; i < spacing; i++) {//number of sample spots
-			// 	point(startMouseX+i*xDiff,startMouseY+i*yDiff)
-			// }
-		if (prevMouseCoord < currMouseCoord) { //for loop is increasing
-			for (var i = 0; i < ceil((currMouseCoord-prevMouseCoord)/this.size); i++) {//number of sample spots
-				image(this.shape,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
-			}
-		}
-		else { //for loop is decrasing
-			for (var i = 0; i > ceil((currMouseCoord-prevMouseCoord-this.size*2)/this.size); i--) {//number of sample spots
-				image(this.shape,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
-			}
+	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff,gaps) {
+		for (var i = 0; i < gaps; i++) {//number of sample spots
+			image(this.shape,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
 		}
 	}
 
-	this.renderAlternateFixed = function(prevMouseCoord,currMouseCoord,xDiff,yDiff) {
-		for (var i = 0; i < abs(currMouseCoord-prevMouseCoord)/this.spacing; i++) {//number of sample spots
-			console.log(xDiff)
+	this.renderAlternateFixed = function(prevMouseCoord,currMouseCoord,xDiff,yDiff,gaps) {
+		for (var i = 0; i < gaps; i++) {//number of sample spots
 			image(this.shape,startMouseX+i*xDiff, startMouseY+i*yDiff,this.size,this.size);
 		}
 	}
