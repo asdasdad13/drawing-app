@@ -111,12 +111,13 @@ function StampTool(){
 			}
 	
 			if (toolSpacingInput.value()>100) toolSpacingInput.value(100); //min and max limits for toolSizeInput
-			if (toolSpacingInput.value()<0) toolSpacingInput.value(0);
-	
+			// if (toolSpacingInput.value()<1) toolSpacingInput.value(1);
+
 			toolSpacingSlider.changed(function() { //if size was adjusted using slider, update values of input field and tool size
 				toolSpacingInput.value(toolSpacingSlider.value());
 				self.spacing = toolSpacingSlider.value();
 			})
+			
 			toolSpacingInput.changed(function() { //if size was adjusted using input field, update values of slider and tool size
 				toolSpacingSlider.value(Number(toolSpacingInput.value()));
 				self.spacing = Number(toolSpacingInput.value());
