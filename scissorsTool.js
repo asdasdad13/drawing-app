@@ -26,10 +26,10 @@ function ScissorsTool(){
                     if (selectArea.y<mouseY) var yOffset = a; //square will be produced above start point
                     else var yOffset = -a; //below
 
-                    selectArea.w = selectArea.h = a;
-                } else {
-                    selectArea.w = mouseX - selectArea.x;
-                    selectArea.h = mouseY - selectArea.y;
+                    selectArea.w = selectArea.h = abs(a);
+                } else { //non-square selection
+                    selectArea.w = abs(mouseX - selectArea.x);
+                    selectArea.h = abs(mouseY - selectArea.y);
                 }
                 if (selectArea.x == -1) {
                     selectArea.x = mouseX;
@@ -38,14 +38,13 @@ function ScissorsTool(){
                     loadPixels();
                 } else if (drawing) {
                     updatePixels();
-                    if (keyIsPressed && key=='') {rect(selectArea.x, selectArea.y, xOffset, yOffset); //with shift key down, render a square
-                    }
-                    else rect(selectArea.x, selectArea.y, selectArea.w, selectArea.h); //render a free rectangle
+                    if (selectArea.w) select('#cutButton').removeAttribute('disabled');
+                    if (keyIsPressed && key=='') rect(selectArea.x, selectArea.y, xOffset, yOffset); //with shift key down, render a square
+                    else rect(selectArea.x, selectArea.y, mouseX - selectArea.x, mouseY - selectArea.y); //render a free rectangle
                 }
             }
         }
         else if (drawing) { //what happens right after mouse is released
-            console.log(selectArea)
             updatePixels();
             loadPixels();
             drawing = false;
@@ -55,7 +54,8 @@ function ScissorsTool(){
     }
 
     this.pasteImage = function() { //paste can be done by clicking button or Ctrl+X, which is controlled at sketch.js
-        image(selectedPixels,mouseX - selectedPixels.width/2, mouseY - selectedPixels.height/2); //pasting mode, just paste and avoid selection mode
+        image(selectedPixels,0,0)
+        image(selectedPixels,mouseX - abs(selectedPixels.width)/2, mouseY - abs(selectedPixels.height)/2); //pasting mode, just paste and avoid selection mode
         loadPixels();
     }
 	
@@ -84,7 +84,7 @@ function ScissorsTool(){
         }
 
         c.mousePressed(function(){
-            if (selectArea.w!=0) {
+            if (selectArea.w!=0) { //area selected, paste selection now made available
                 updatePixels();
                 console.log('Cut!');
                 selectedPixels = get(selectArea.x,selectArea.y,selectArea.w,selectArea.h);
@@ -94,16 +94,15 @@ function ScissorsTool(){
         })
 
         p.mousePressed(function(){
-            if (self.selectMode==0) {
+            if (self.selectMode==0) { //switching to pasting mode
                 self.selectMode++;
                 this.html('End paste');
                 c.attribute('disabled','disabled');
                 c.style('color','grey');
-            } else {
+            } else { //switching to cutting mode
                 self.selectMode--;
                 this.html('Paste selection');
             }
-            selectArea = {x: -1, y: -1, w: 0, h: 0}; //???
         })
 	};
 };

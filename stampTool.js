@@ -25,28 +25,20 @@ function StampTool(){
 					//draw the line
 					let xDist = mouseX - startMouseX;
 					let yDist = mouseY - startMouseY;
-					if (abs(xDist) > abs(yDist)) { //x axis changes more
-						if (this.fixedSpacing) {
-							let gaps = abs(xDist/(this.spacing+this.size/2));
-							this.renderAlternateFixed(startMouseX,mouseX,xDist/gaps,yDist/gaps,gaps);
-						}
-						else {
-							let gaps = abs(xDist/this.size);
-							this.renderAlternate(startMouseX,mouseX,xDist/gaps,yDist/gaps,gaps);
-						}
+					if (abs(xDist) > abs(yDist))//x axis changes more
+					{ 
+						if (this.fixedSpacing) var gaps = abs(xDist/(this.spacing+this.size));
+						else var gaps = abs(xDist/this.size/2);
 					}
-					else { //y axis changes more
-						if (this.fixedSpacing) {
-							let gaps = abs(yDist/(this.spacing+this.size/2));
-							this.renderAlternateFixed(startMouseY,mouseY,xDist/gaps,yDist/gaps,gaps);
-						}
-						else {
-							let gaps =abs( yDist/this.size);
-							this.renderAlternate(startMouseY,mouseY,xDist/gaps,yDist/gaps,gaps);
-						}
+					else //y axis changes more
+					{
+						if (this.fixedSpacing) var gaps = abs(yDist/(this.spacing+this.size));
+						else var gaps = abs(yDist/this.size/2);
 					}
+					this.renderAlternate(xDist/gaps, yDist/gaps, gaps);
 				}
 			}
+			
 			else { //draw normally
 				if (this.fixedSpacing) { //apply fixed spacing
 					if (dist(mouseX,mouseY,prevMouseX,prevMouseY) >= this.spacing+this.size/2) { //ensure spacing between stamped images
@@ -70,15 +62,9 @@ function StampTool(){
 		this.checkSpacingChanged();
 	};
 
-	this.renderAlternate = function(prevMouseCoord,currMouseCoord,xDiff,yDiff,gaps) {
-		for (var i = 0; i < gaps; i++) {//number of sample spots
+	this.renderAlternate = function(xDiff,yDiff,gaps) {
+		for (let i = 0; i < gaps; i++) {//number of sample spots
 			image(this.shape,startMouseX+i*xDiff-this.size/2, startMouseY+i*yDiff-this.size/2,this.size,this.size);
-		}
-	}
-
-	this.renderAlternateFixed = function(prevMouseCoord,currMouseCoord,xDiff,yDiff,gaps) {
-		for (var i = 0; i < gaps; i++) {//number of sample spots
-			image(this.shape,startMouseX+i*xDiff, startMouseY+i*yDiff,this.size,this.size);
 		}
 	}
 
@@ -89,7 +75,7 @@ function StampTool(){
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);
 			}
-			if (key==']' && self.size<100) { //increase brush size with ']'
+			if (key==']' && this.size<100) { //increase brush size with ']'
 				this.size++;
 				toolSizeSlider.value(this.size); //update slider and input field values
 				toolSizeInput.value(this.size);
@@ -112,7 +98,7 @@ function StampTool(){
 	this.checkSpacingChanged = function() {
 		if (this.fixedSpacing) {
 			if (keyIsPressed){
-				if (key=='[' && this.spacing>1) { //decrease brush size with '['
+				if (key=='[' && this.spacing>0) { //decrease brush size with '['
 					this.spacing--;
 					toolSpacingSlider.value(this.spacing); //update slider and input field values
 					toolSpacingInput.value(this.spacing);
@@ -169,7 +155,7 @@ function StampTool(){
 
 		//add a spacing option
 		var b = createDiv();
-		b.html('Spacing: ')
+		b.html('Spacing: ');
 		b.parent('#tool-spacing');
 
 		toolSpacingSlider = createSlider(0,100,this.spacing);
@@ -177,20 +163,20 @@ function StampTool(){
 
 		toolSpacingInput = createInput(this.spacing);
 		toolSpacingInput.parent(b);
-		toolSpacingInput.attribute('type', 'number')
+		toolSpacingInput.attribute('type', 'number');
 		toolSpacingInput.style('width','3rem');
 
 		//add html element for brush size slider
 		var c = createDiv();
 		c.id('tool-size');
-		c.html('Tool radius: ')
+		c.html('Tool radius: ');
 		c.parent(Ldiv);
 
 		toolSizeSlider = createSlider(1,100,this.size);
 		toolSizeSlider.parent(c);
 
 		toolSizeInput = createInput(this.size);
-		toolSizeInput.attribute('type', 'number')
+		toolSizeInput.attribute('type', 'number');
 		toolSizeInput.parent('tool-size');
 		toolSizeInput.style('width','3rem');
 		
