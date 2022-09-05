@@ -47,10 +47,12 @@ function setup() {
 	toolbox.addTool(new RectangleTool(), 'Draw rectangles. Hold shift while drawing to draw squares.');
 	toolbox.addTool(new EllipseTool(), 'Draw ellipses. Hold shift while drawing to draw circles.');
 	toolbox.addTool(new StampTool(), 'Stamp images onto the canvas. Hold shift while drawing to stamp in a straight line.');
-	toolbox.addTool(new ScissorsTool(), 'Click and drag mouse on an area of the canvas to select an area to be cut, then click on "Cut Selection" to finalise the selection. Click "Paste Selection" to start pasting your selection by clicking on the canvas. Click "End paste" to enter selection mode again.');
+	toolbox.addTool(new ScissorsTool(), 'Click and drag mouse on an area of the canvas to select an area to be cut, then click on "Cut Selection" to finalise the selection. Click "Paste Selection" to start pasting your selection by clicking on the canvas. Click "End paste" to enter selection mode again. Hold Shift while drawing to get a square selection.');
 
 	background(255); //background must be present or undo/redo will not work
 	blankCanvas = get(); //for resetting canvas to clean white image when cleared
+
+	alert('Welcome!\nPlease hover your mouse over the tool icons to see notes on usage.\n\nEnjoy!');
 }
 
 function draw() {
