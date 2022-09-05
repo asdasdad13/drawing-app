@@ -59,8 +59,10 @@ function draw() {
 	//call the draw function from the selected tool.
 	//if there isn't a draw method the app will alert the user
 	if (toolbox.selectedTool.hasOwnProperty("draw")) {
-		fill(colourP.selectedFillColour);//must reset colour after going to scissors tool
-		stroke(colourP.selectedStrokeColour)
+		noFill();
+		stroke('black')
+		// fill(colourP.selectedFillColour);//must reset colour after going to scissors tool
+		// stroke(colourP.selectedStrokeColour)
 		toolbox.selectedTool.draw();
 	}
 }

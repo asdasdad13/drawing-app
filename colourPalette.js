@@ -45,7 +45,7 @@ function ColourPalette() {
 			select(".colourPalette").child(colourSwatch);
 			select("#" + colourID).style("background-color", this.colours[i]);
 			console.log(colourSwatch.mousePressed)
-			// colourSwatch.mousePressed(colourClick);
+			colourSwatch.mousePressed(colourClick);
 		}
 		let strokeLetter = createP('S'); //left click = change selected stroke colour
 		strokeLetter.parent('#' + this.selectedStrokeColour + 'Swatch');
