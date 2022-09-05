@@ -27,7 +27,7 @@ function ScissorsTool(){
                     else var yOffset = -a; //below
 
                     selectArea.w = selectArea.h = abs(a);
-                } else { //non-square selection
+                } else {
                     selectArea.w = abs(mouseX - selectArea.x);
                     selectArea.h = abs(mouseY - selectArea.y);
                 }
@@ -38,8 +38,8 @@ function ScissorsTool(){
                     loadPixels();
                 } else if (drawing) {
                     updatePixels();
-                    if (selectArea.w) select('#cutButton').removeAttribute('disabled');
-                    if (keyIsPressed && key=='') rect(selectArea.x, selectArea.y, xOffset, yOffset); //with shift key down, render a square
+                    if (keyIsPressed && key=='') {rect(selectArea.x, selectArea.y, xOffset, yOffset); //with shift key down, render a square
+                    }
                     else rect(selectArea.x, selectArea.y, mouseX - selectArea.x, mouseY - selectArea.y); //render a free rectangle
                 }
             }
@@ -54,6 +54,7 @@ function ScissorsTool(){
     }
 
     this.pasteImage = function() { //paste can be done by clicking button or Ctrl+X, which is controlled at sketch.js
+        image(selectedPixels,mouseX - selectedPixels.width/2, mouseY - selectedPixels.height/2); //pasting mode, just paste and avoid selection mode
         loadPixels();
     }
 	
@@ -82,22 +83,22 @@ function ScissorsTool(){
         }
 
         c.mousePressed(function(){
-            if (selectArea.w!=0) { //area selected, paste selection now made available
+            if (selectArea.w!=0) {
                 updatePixels();
                 console.log('Cut!');
-                selectedPixels = get(selectArea.x,selectArea.y,selectArea.w,selectArea.h);
+                selectedPixels = get(selectArea.x,selectArea.y,abs(selectArea.w),abs(selectArea.h));
                 p.removeAttribute('disabled');
                 p.style('color','#FFF');
             }
         })
 
         p.mousePressed(function(){
-            if (self.selectMode==0) { //switching to pasting mode
+            if (self.selectMode==0) {
                 self.selectMode++;
                 this.html('End paste');
                 c.attribute('disabled','disabled');
                 c.style('color','grey');
-            } else { //switching to cutting mode
+            } else {
                 self.selectMode--;
                 this.html('Paste selection');
             }

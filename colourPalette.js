@@ -3,10 +3,10 @@ function ColourPalette() {
 	//a list of web colour strings
 	this.colours = ["black", "silver", "gray", "white", "maroon", "red", "purple",
 		"orange", "pink", "fuchsia", "green", "lime", "olive", "yellow", "navy",
-		"blue", "teal", "cyan"];
+		"blue", "teal", "transparent"];
 	//make the start colour be black
 	this.selectedStrokeColour = "black";
-	this.selectedFillColour = "cyan";
+	this.selectedFillColour = 'transparent';
 
 	var self = this;
 
@@ -15,13 +15,13 @@ function ColourPalette() {
 			select("#strokeLetter").remove(); //remove old 'S'
 			var letter = createP('S');
 			letter.id('strokeLetter');
-			self.selectedStrokeColour = this.id().split("Swatch")[0];;
+			self.selectedStrokeColour = this.id().split("Swatch")[0];
 		}
 		else if (mouseButton == RIGHT) { //right click = change selected fill colour
 			select("#fillLetter").remove(); //remove old 'F'
 			var letter = createP('F');
 			letter.id('fillLetter');
-			self.selectedFillColour = this.id().split("Swatch")[0];
+			self.selectedFillColour = this.id().split("Swatch")[0];	
 		}
 		letter.parent(this);
 	}
@@ -44,7 +44,6 @@ function ColourPalette() {
 
 			select(".colourPalette").child(colourSwatch);
 			select("#" + colourID).style("background-color", this.colours[i]);
-			console.log(colourSwatch.mousePressed)
 			colourSwatch.mousePressed(colourClick);
 		}
 		let strokeLetter = createP('S'); //left click = change selected stroke colour
