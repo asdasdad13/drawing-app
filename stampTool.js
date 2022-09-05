@@ -225,7 +225,7 @@ function StampTool(){
 				for (j in items) {
 					items[j].style('border', '1px solid black');
 				}
-				ShapeIcon.style('border','1px solid red');
+				ShapeIcon.style('border','3px solid red');
 			});
 		}
 	};

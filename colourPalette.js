@@ -3,42 +3,37 @@ function ColourPalette() {
 	//a list of web colour strings
 	this.colours = ["black", "silver", "gray", "white", "maroon", "red", "purple",
 		"orange", "pink", "fuchsia", "green", "lime", "olive", "yellow", "navy",
-		"blue", "teal", "aqua"
-	];
+		"blue", "teal", "transparent"];
 	//make the start colour be black
-	this.selectedColour = "black";
+	this.selectedStrokeColour = "black";
+	this.selectedFillColour = "transparent";
 
 	var self = this;
 
 	var colourClick = function() {
-		//remove the old border
-		var s = document.querySelector("#" + self.selectedColour + "Swatch");
-		if (s.hasChildNodes()) s.removeChild(s.firstElementChild);
-
-		//get the new colour from the id of the clicked element
-		var c = this.id().split("Swatch")[0];
-
-		//set the selected colour and fill and stroke
-		self.selectedColour = c;
-		stroke(c);
-		// fill(c);
-		this.style('text-align','center')
-		var letter = createP('S'); //left click = change selected stroke colour
+		if (mouseButton == LEFT) { //left click = change selected stroke colour
+			select("#strokeLetter").remove(); //remove old 'S'
+			var letter = createP('S');
+			letter.id('strokeLetter');
+			self.selectedStrokeColour = this.id().split("Swatch")[0];;
+		}
+		else if (mouseButton == RIGHT) { //right click = change selected fill colour
+			select("#fillLetter").remove(); //remove old 'F'
+			var letter = createP('F');
+			letter.id('fillLetter');
+			self.selectedFillColour = this.id().split("Swatch")[0];
+		}
 		letter.parent(this);
-		letter.class('swatch-letter');
-		letter.style('font-size','2rem');
-		letter.style('text-shadow','-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'); //text outline
 	}
 
 	//load in the colours
 	this.loadColours = function() {
-		//set the fill and stroke properties to be black at the start of the programme
-		//running
-		noFill();
-		stroke(this.colours[0]);
+		//set the fill and stroke properties to be black at the start of the programme running
+		stroke(this.selectedStrokeColour);
+		fill(this.selectedFillColour);
 
 		//for each colour create a new div in the html for the colourSwatches
-		for (var i = 0; i < this.colours.length; i++) {
+		for (let i = 0; i < this.colours.length; i++) {
 			var colourID = this.colours[i] + "Swatch";
 
 			//using JQuery add the swatch to the palette and set its background colour
@@ -47,18 +42,18 @@ function ColourPalette() {
 			colourSwatch.class('colourSwatches');
 			colourSwatch.id(colourID);
 
-
 			select(".colourPalette").child(colourSwatch);
 			select("#" + colourID).style("background-color", this.colours[i]);
-			colourSwatch.mouseClicked(colourClick);
+			console.log(colourSwatch.mousePressed)
+			// colourSwatch.mousePressed(colourClick);
 		}
+		let strokeLetter = createP('S'); //left click = change selected stroke colour
+		strokeLetter.parent('#' + this.selectedStrokeColour + 'Swatch');
+		strokeLetter.id('strokeLetter');
 
-		var p = select(".colourSwatches").style('text-align','center')
-		var letter = createP('S'); //left click = change selected stroke colour
-		letter.parent(p);
-		letter.class('swatch-letter');
-		letter.style('font-size','2rem');
-		letter.style('text-shadow','-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000'); //text outline
+		let fillLetter = createP('F'); //left click = change selected stroke colour
+		fillLetter.parent('#' + this.selectedFillColour + 'Swatch');
+		fillLetter.id('fillLetter');
 	};
 	//call the loadColours function now it is declared
 	this.loadColours();

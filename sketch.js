@@ -22,7 +22,7 @@ function preload() {
 }
 
 function setup() {
-	// document.addEventListener('contextmenu',e=>e.preventDefault()); //disable right-click
+	document.addEventListener('contextmenu',e=>e.preventDefault()); //disable right-click
 
 	//create a canvas to fill the content div from index.html
 	canvasContainer = select('#content');
@@ -59,8 +59,8 @@ function draw() {
 	//call the draw function from the selected tool.
 	//if there isn't a draw method the app will alert the user
 	if (toolbox.selectedTool.hasOwnProperty("draw")) {
-		noFill();
-		stroke(colourP.selectedColour)
+		fill(colourP.selectedFillColour);//must reset colour after going to scissors tool
+		stroke(colourP.selectedStrokeColour)
 		toolbox.selectedTool.draw();
 	}
 }
