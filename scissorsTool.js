@@ -54,8 +54,6 @@ function ScissorsTool(){
     }
 
     this.pasteImage = function() { //paste can be done by clicking button or Ctrl+X, which is controlled at sketch.js
-        image(selectedPixels,0,0)
-        image(selectedPixels,mouseX - (selectedPixels.width)/2, mouseY - (selectedPixels.height)/2); //pasting mode, just paste and avoid selection mode
         loadPixels();
     }
 	

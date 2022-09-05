@@ -3,10 +3,10 @@ function ColourPalette() {
 	//a list of web colour strings
 	this.colours = ["black", "silver", "gray", "white", "maroon", "red", "purple",
 		"orange", "pink", "fuchsia", "green", "lime", "olive", "yellow", "navy",
-		"blue", "teal", "transparent"];
+		"blue", "teal", "cyan"];
 	//make the start colour be black
 	this.selectedStrokeColour = "black";
-	this.selectedFillColour = "transparent";
+	this.selectedFillColour = "cyan";
 
 	var self = this;
 
