@@ -1,5 +1,4 @@
 A drawing app you can use in browser. Currently only runs by hitting Live Server in VSCode. Powered by [p5js](https://github.com/processing/p5.js).
-I thought I did pretty well for the assignment which was to make an improved drawing app from a given code template but I got a nasty grade with no feedback so I'm taking revenge by making this repo public.
 
 ![Screenshot of drawing app running in browser](app-preview.png)
 # Modifications and extensions to original code base
